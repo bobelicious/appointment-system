@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: appointment-system
+  datasource:
+    url: jdbc:postgresql://localhost:5432/appointments
+    username: postgres
+    password: 123
+  jpa:
+    hibernate:
+      ddl-auto: update
