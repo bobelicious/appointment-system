@@ -1,4 +1,4 @@
-package com.augusto.appointment_system.unit.repository;
+package com.augusto.appointment_system.unit_tests.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,16 +116,16 @@ public class ClientRepositoryTest {
         clientRepository.save(client);
         // when - action or the behavior that we are goint to test
         clientRepository.deleteById(client.getId());
-        // then - verifyu the resul
+        // then - verify the result
         assertThat(clientRepository.findById(client.getId())).isEmpty();
     }
 
-    @Test
-    public void given_when_then() {
-        // given - precodition or setup
+    // @Test
+    // public void given_when_then() {
+    //     // given - precodition or setup
 
-        // when - action or the behavior that we are goint to test
+    //     // when - action or the behavior that we are goint to test
 
-        // then - verifyu the resul
-    }
+    //     // then - verify the result
+    // }
 }

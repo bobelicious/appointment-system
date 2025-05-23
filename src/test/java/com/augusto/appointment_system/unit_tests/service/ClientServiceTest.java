@@ -1,0 +1,180 @@
+package com.augusto.appointment_system.unit_tests.service;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.augusto.appointment_system.dto.ClientDto;
+import com.augusto.appointment_system.exception.ClientException;
+import com.augusto.appointment_system.exception.ResourceNotFoundException;
+import com.augusto.appointment_system.model.Client;
+import com.augusto.appointment_system.repository.ClientRepository;
+import com.augusto.appointment_system.service.ClientService;
+
+@ExtendWith(MockitoExtension.class)
+public class ClientServiceTest {
+    @Mock
+    private ClientRepository clientRepository;
+
+    @InjectMocks
+    private ClientService clientService;
+
+    private ClientDto clientDto;
+    private ClientDto updatedClientDto;
+    private Client client;
+    private Client toUpdateClient;
+    private List<Client> clientList = new ArrayList<>();
+    private List<ClientDto> clientDtoList = new ArrayList<>();
+
+    @BeforeEach
+    void setup() {
+        clientDto = new ClientDto("John Doe", "a@email.com", "3499999999");
+        updatedClientDto = new ClientDto("Jarad Antony Higgins", "jarad@email.com", "349123765");
+        clientDtoList.add(clientDto);
+        clientDtoList.add(new ClientDto("Jane Doe", "b@email.com", "3499999999"));
+        clientDtoList.add(new ClientDto("Max Smith", "c@email.com", "3499999999"));
+        clientDtoList.add(new ClientDto("Carlo San", "d@email.com", "3499999999"));
+
+        client = new Client(1L, "John Doe", "a@email.com", "3499999999");
+        toUpdateClient = new Client(1L, "Jarad Antony Higgins", "jarad@email.com", "349123765");
+        clientList.add(client);
+        clientList.add(new Client(2L, "Jane Doe", "b@email.com", "3499999999"));
+        clientList.add(new Client(3L, "Max Smith", "c@email.com", "3499999999"));
+        clientList.add(new Client(4L, "Carlo San", "d@email.com", "3499999999"));
+    }
+
+    @Test
+    void givenClientDto_whenSave_thenReturnClientDto() {
+        // given - precondition or setup
+        given(clientRepository.existsByEmail(clientDto.getEmail())).willReturn(false);
+        given(clientRepository.save(any(Client.class))).willReturn(client);
+
+        // when - action or the behavior that we are going to test
+        var savedClient = clientService.saveClient(clientDto);
+
+        // then - verify the result
+        assertThat(savedClient).isNotNull();
+        assertThat(savedClient.getEmail()).isEqualTo(clientDto.getEmail());
+    }
+
+    @Test
+    public void givenClientDto_whenSave_thenThrowsException() {
+        // given - precodition or setup
+        given(clientRepository.existsByEmail(clientDto.getEmail())).willReturn(true);
+        // when - action or the behavior that we are goint to test
+        assertThrows(ClientException.class, () -> {
+            clientService.saveClient(clientDto);
+        });
+        // then - verify the result
+        verify(clientRepository, never()).save(any(Client.class));
+    }
+
+    @Test
+    public void givenId_whenFindById_thenReturnClientDto() {
+        // given - precodition or setup
+        given(clientRepository.findById(1L)).willReturn(Optional.of(client));
+        // when - action or the behavior that we are goint to test
+        var result = clientService.findClientById(1L);
+        // then - verify the result
+        assertThat(result.getName()).isEqualTo(clientDto.getName());
+        assertThat(result.getEmail()).isEqualTo(clientDto.getEmail());
+        assertThat(result.getPhone()).isEqualTo(clientDto.getPhone());
+    }
+
+    @Test
+    public void givenListOfClients_whenFindAll_thenReturnListOfClietsDto() {
+        // given - precodition or setup
+        given(clientRepository.findAll()).willReturn(clientList);
+        // when - action or the behavior that we are goint to test
+        var findAllClients = clientService.findAll();
+        // then - verify the result
+        assertThat(findAllClients.size()).isEqualTo(clientDtoList.size());
+    }
+
+    @Test
+    public void givenClientDto_whenUpdateClient_thenReturnUpdatedClientDto() {
+        // given - precodition or setup
+        given(clientRepository.existsByEmail(toUpdateClient.getEmail())).willReturn(false);
+        given(clientRepository.findById(client.getId())).willReturn(Optional.of(client));
+        given(clientRepository.save(any(Client.class))).willReturn(toUpdateClient);
+        // when - action or the behavior that we are goint to test
+        clientDto = clientService.updateClient(updatedClientDto, 1L);
+        // then - verify the result
+        assertThat(clientDto.getName()).isEqualTo(updatedClientDto.getName());
+        assertThat(clientDto.getEmail()).isEqualTo(updatedClientDto.getEmail());
+        assertThat(clientDto.getPhone()).isEqualTo(updatedClientDto.getPhone());
+    }
+
+    @Test
+    public void givenClientDto_whenUpdateClient_thenThrowsClientException() {
+        // given - precodition or setup
+        given(clientRepository.existsByEmail(updatedClientDto.getEmail())).willReturn(true);
+        // when - action or the behavior that we are goint to test
+        assertThrows(ClientException.class, () -> {
+            clientService.updateClient(updatedClientDto, 1L);
+        });
+        // then - verify the result
+        verify(clientRepository, never()).save(any(Client.class));
+    }
+
+    @Test
+    public void givenClientDto_whenUpdateClient_thenThrowsResourceNotFoundException() {
+        // given - precodition or setup
+        given(clientRepository.existsByEmail(updatedClientDto.getEmail())).willReturn(false);
+        given(clientRepository.findById(1L)).willReturn(Optional.empty());
+        // when - action or the behavior that we are goint to test
+        assertThrows(ResourceNotFoundException.class, () -> {
+            clientService.updateClient(updatedClientDto, 1L);
+        });
+        // then - verify the result
+        verify(clientRepository, never()).save(any(Client.class));
+    }
+
+    @Test
+    public void givenId_whenDeleteClient_thenVerify() {
+        // given - precodition or setup
+        given(clientRepository.findById(1L)).willReturn(Optional.of(client));
+        willDoNothing().given(clientRepository).delete(client);
+        // when - action or the behavior that we are goint to test
+        clientService.deleteClientById(1L);
+        // then - verify the result
+        then(clientRepository).should().delete(client);
+    }
+
+    @Test
+    public void givenId_whenDeleteClient_thenThrowsResourceNotFoundException() {
+        // given - precodition or setup
+        given(clientRepository.findById(1L)).willReturn(Optional.empty());
+        // when - action or the behavior that we are goint to test
+        assertThrows(ResourceNotFoundException.class, () -> {
+            clientService.deleteClientById(1L);
+        });
+        // then - verify the result
+        verify(clientRepository, never()).delete(any(Client.class));
+    }
+
+    // @Test
+    // public void given_when_then() {
+    // // given - precodition or setup
+
+    // // when - action or the behavior that we are goint to test
+
+    // // then - verify the result
+    // }
+}

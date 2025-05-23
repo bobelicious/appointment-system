@@ -9,6 +9,9 @@ import com.augusto.appointment_system.exception.ClientException;
 import com.augusto.appointment_system.exception.ResourceNotFoundException;
 
 import static com.augusto.appointment_system.mapper.ClientMapper.*;
+
+import java.util.List;
+
 import com.augusto.appointment_system.repository.ClientRepository;
 
 @Service
@@ -17,9 +20,7 @@ public class ClientService {
     private ClientRepository clientRepository;
 
     public ClientDto saveClient(ClientDto clientDto) {
-        if (clientRepository.existsByEmail(clientDto.getEmail())) {
-            throw new ClientException(HttpStatus.BAD_REQUEST, "email already exist");
-        }
+        validEmail(clientDto.getEmail());
         return mapToClientDto(clientRepository.save(mapToClient(clientDto)));
     }
 
@@ -27,5 +28,38 @@ public class ClientService {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("client", "id", id));
         return mapToClientDto(client);
+    }
+
+    public List<ClientDto> findAll() {
+        return clientRepository.findAll().stream()
+                .map((client) -> mapToClientDto(client)).toList();
+    }
+
+    public ClientDto updateClient(ClientDto updatedClientDto, Long id) {
+        validEmail(updatedClientDto.getEmail());
+        var client = clientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Client", "id", id));
+        client.setEmail(updatedClientDto.getEmail());
+        client.setEmail(updatedClientDto.getName());
+        client.setEmail(updatedClientDto.getPhone());
+        client = clientRepository.save(client);
+        return mapToClientDto(client);
+    }
+
+    public void deleteClientById(Long id) {
+        clientRepository.findById(id)
+                .ifPresentOrElse(
+                        (client) -> {
+                            clientRepository.delete(client);
+                        },
+                        () -> {
+                            throw new ResourceNotFoundException("client", "id", id);
+                        });
+    }
+
+    private void validEmail(String email) {
+        if (clientRepository.existsByEmail(email)) {
+            throw new ClientException(HttpStatus.BAD_REQUEST, "email already exist");
+        }
     }
 }
