@@ -1,0 +1,38 @@
+
+services:
+  appointment:
+    image: bobelicious/appointment
+    environment:
+      SPRING.DATASOURCE.URL: jdbc:postgresql://db:5432/appointment?useSSL=false&enabledTLSProtocols=TLSv1.2
+      SPRING.DATASOURCE.USERNAME: postgres
+      SPRING.DATASOURCE.PASSWORD: 123
+    restart: always
+    ports:
+      - 80:80
+    command: mvn spring-boot:run
+    depends_on:
+      - db
+    networks:
+      - augusto-network
+    build:
+      context: .
+      dockerfile: Dockerfile
+  db:
+    image: postgres:latest
+    command: -p 5432
+    restart: always
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: postgres
+      POSTGRES_DB: packaging
+    networks:
+      - augusto-network
+
+
+networks:
+  augusto-network:
+    driver: bridge

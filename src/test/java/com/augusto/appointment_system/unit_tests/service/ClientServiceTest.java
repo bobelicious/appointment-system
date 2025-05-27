@@ -9,6 +9,8 @@ import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,8 @@ import com.augusto.appointment_system.exception.ResourceNotFoundException;
 import com.augusto.appointment_system.model.Client;
 import com.augusto.appointment_system.repository.ClientRepository;
 import com.augusto.appointment_system.service.ClientService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
 public class ClientServiceTest {
@@ -34,6 +38,13 @@ public class ClientServiceTest {
 
     @InjectMocks
     private ClientService clientService;
+
+    private static final String CLIENT_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/entity/client.json";
+    private static final String CLIENT_LIST_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/entity/client-list.json";
+    private static final String CLIENT_DTO_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/dto/client-dto.json";
+    private static final String CLIENT_DTO_LIST_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/dto/client-list-dto.json";
+
+    ObjectMapper objectMapper = new ObjectMapper();
 
     private ClientDto clientDto;
     private ClientDto updatedClientDto;
@@ -44,19 +55,42 @@ public class ClientServiceTest {
 
     @BeforeEach
     void setup() {
-        clientDto = new ClientDto("John Doe", "a@email.com", "3499999999");
-        updatedClientDto = new ClientDto("Jarad Antony Higgins", "jarad@email.com", "349123765");
-        clientDtoList.add(clientDto);
-        clientDtoList.add(new ClientDto("Jane Doe", "b@email.com", "3499999999"));
-        clientDtoList.add(new ClientDto("Max Smith", "c@email.com", "3499999999"));
-        clientDtoList.add(new ClientDto("Carlo San", "d@email.com", "3499999999"));
+        updatedClientDto = new ClientDto("Jarad Antony Higgins", "jarad@email.com", "34992177249");
+        toUpdateClient = new Client(null, "Jarad Antony Higgins", "jarad@email.com", "34992177249");
 
-        client = new Client(1L, "John Doe", "a@email.com", "3499999999");
-        toUpdateClient = new Client(1L, "Jarad Antony Higgins", "jarad@email.com", "349123765");
-        clientList.add(client);
-        clientList.add(new Client(2L, "Jane Doe", "b@email.com", "3499999999"));
-        clientList.add(new Client(3L, "Max Smith", "c@email.com", "3499999999"));
-        clientList.add(new Client(4L, "Carlo San", "d@email.com", "3499999999"));
+        try {
+            clientDto = objectMapper.readValue(
+                    new File(CLIENT_DTO_JSON_PATH),
+                    ClientDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            clientDtoList = objectMapper.readValue(
+                    new File(CLIENT_DTO_LIST_JSON_PATH),
+                    new TypeReference<List<ClientDto>>() {
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            client = objectMapper.readValue(
+                    new File(CLIENT_JSON_PATH),
+                    Client.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            clientList = objectMapper.readValue(
+                    new File(CLIENT_LIST_JSON_PATH),
+                    new TypeReference<List<Client>>() {
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -114,7 +148,7 @@ public class ClientServiceTest {
         given(clientRepository.findById(client.getId())).willReturn(Optional.of(client));
         given(clientRepository.save(any(Client.class))).willReturn(toUpdateClient);
         // when - action or the behavior that we are goint to test
-        clientDto = clientService.updateClient(updatedClientDto, 1L);
+        clientDto = clientService.updateClient(updatedClientDto, toUpdateClient.getId());
         // then - verify the result
         assertThat(clientDto.getName()).isEqualTo(updatedClientDto.getName());
         assertThat(clientDto.getEmail()).isEqualTo(updatedClientDto.getEmail());

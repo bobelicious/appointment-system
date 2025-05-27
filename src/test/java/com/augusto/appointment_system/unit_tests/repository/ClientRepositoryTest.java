@@ -1,9 +1,12 @@
 package com.augusto.appointment_system.unit_tests.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,38 +14,40 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.augusto.appointment_system.model.Client;
 import com.augusto.appointment_system.repository.ClientRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @DataJpaTest
 public class ClientRepositoryTest {
     @Autowired
     ClientRepository clientRepository;
+    ObjectMapper objectMapper = new ObjectMapper();
 
+    private static final String CLIENT_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/entity/client.json";
+    private static final String CLIENT_LIST_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/entity/client-list.json";
     private Client client;
     private List<Client> clientList = new ArrayList<>();
 
     @BeforeEach
     void setup() {
-        client = Client.builder()
-                .name("John Doe")
-                .email("a@email.com")
-                .phone("3499999999")
-                .build();
-        clientList.add(client);
-        clientList.add(Client.builder()
-                .name("Jane Doe")
-                .email("b@email.com")
-                .phone("3499999999")
-                .build());
-        clientList.add(Client.builder()
-                .name("Max Smith")
-                .email("c@email.com")
-                .phone("3499999999")
-                .build());
-        clientList.add(Client.builder()
-                .name("Carlo San")
-                .email("d@email.com")
-                .phone("3499999999")
-                .build());
+
+        try {
+            client = objectMapper.readValue(
+                    new File(CLIENT_JSON_PATH),
+                    Client.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            clientList = objectMapper.readValue(
+                    new File(CLIENT_LIST_JSON_PATH),
+                    new TypeReference<List<Client>>() {
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
@@ -122,10 +127,10 @@ public class ClientRepositoryTest {
 
     // @Test
     // public void given_when_then() {
-    //     // given - precodition or setup
+    // // given - precodition or setup
 
-    //     // when - action or the behavior that we are goint to test
+    // // when - action or the behavior that we are goint to test
 
-    //     // then - verify the result
+    // // then - verify the result
     // }
 }

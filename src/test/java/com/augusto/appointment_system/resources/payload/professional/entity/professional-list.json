@@ -1,0 +1,26 @@
+[
+    {
+        "id": null,
+        "name": "Dr Smith",
+        "email": "a@gmail.com",
+        "specialty": "Cardiology"
+    },
+    {
+        "id": null,
+        "name": "Dr Jones",
+        "email": "b@gmail.com",
+        "specialty": "Dermatology"
+    },
+    {
+        "id": null,
+        "name": "Dr Brown",
+        "email": "c@gmail.com",
+        "specialty": "Neurology"
+    },
+    {
+        "id": null,
+        "name": "Dr Davis",
+        "email": "db@gmail.com",
+        "specialty": "Pediatrics"
+    }
+]

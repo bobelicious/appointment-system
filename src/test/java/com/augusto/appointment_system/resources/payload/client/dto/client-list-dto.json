@@ -1,0 +1,22 @@
+[
+    {
+        "name": "John Doe",
+        "email": "a@gmail.com",
+        "phone": "3499999999"
+    },
+    {
+        "name": "Jane Smith",
+        "email": "b@gmail.com",
+        "phone": "3499999999"
+    },
+    {
+        "name": "Alice Johnson",
+        "email": "c@gmail.com",
+        "phone": "3499999999"
+    },
+    {
+        "name": "Bob Brown",
+        "email": "d@gmail.com",
+        "phone": "3499999999"
+    }
+]
