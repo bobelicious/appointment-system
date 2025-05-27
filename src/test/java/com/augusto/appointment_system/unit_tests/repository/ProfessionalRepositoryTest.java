@@ -23,8 +23,8 @@ public class ProfessionalRepositoryTest {
     ProfessionalRepository professionalRepository;
     ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final String PROFESSIONAL_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/professional/entity/professional.json";
-    private static final String PROFESSIONAL_LIST_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/professional/entity/professional-list.json";
+    private static final String PROFESSIONAL_JSON_PATH = "src/test/resources/payload/professional/entity/professional.json";
+    private static final String PROFESSIONAL_LIST_JSON_PATH = "src/test/resources/payload/professional/entity/professional-list.json";
 
     private Professional professional;
     private List<Professional> professionalList = new ArrayList<>();

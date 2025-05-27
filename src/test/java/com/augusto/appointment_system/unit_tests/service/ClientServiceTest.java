@@ -39,10 +39,10 @@ public class ClientServiceTest {
     @InjectMocks
     private ClientService clientService;
 
-    private static final String CLIENT_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/entity/client.json";
-    private static final String CLIENT_LIST_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/entity/client-list.json";
-    private static final String CLIENT_DTO_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/dto/client-dto.json";
-    private static final String CLIENT_DTO_LIST_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/dto/client-list-dto.json";
+    private static final String CLIENT_JSON_PATH = "src/test/resources/payload/client/entity/client.json";
+    private static final String CLIENT_LIST_JSON_PATH = "src/test/resources/payload/client/entity/client-list.json";
+    private static final String CLIENT_DTO_JSON_PATH = "src/test/resources/payload/client/dto/client-dto.json";
+    private static final String CLIENT_DTO_LIST_JSON_PATH = "src/test/resources/payload/client/dto/client-list-dto.json";
 
     ObjectMapper objectMapper = new ObjectMapper();
 

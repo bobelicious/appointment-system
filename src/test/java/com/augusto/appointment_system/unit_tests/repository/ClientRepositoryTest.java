@@ -23,8 +23,8 @@ public class ClientRepositoryTest {
     ClientRepository clientRepository;
     ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final String CLIENT_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/entity/client.json";
-    private static final String CLIENT_LIST_JSON_PATH = "src/test/java/com/augusto/appointment_system/resources/payload/client/entity/client-list.json";
+    private static final String CLIENT_JSON_PATH = "src/test/resources/payload/client/entity/client.json";
+    private static final String CLIENT_LIST_JSON_PATH = "src/test/resources/payload/client/entity/client-list.json";
     private Client client;
     private List<Client> clientList = new ArrayList<>();
 
