@@ -28,7 +28,7 @@ jobs:
 
       - name: Build appointment Microservice Jar
         working-directory: .
-        run: mvn clean package
+        run: mvn clean package -X
 
       - name: Install Docker Compose
         run: |
