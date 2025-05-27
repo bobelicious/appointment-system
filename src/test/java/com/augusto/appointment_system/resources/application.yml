@@ -1,0 +1,10 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: appointment-system
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update

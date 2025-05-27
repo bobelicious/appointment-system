@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.augusto.appointment_system.dto.ClientDto;
 import com.augusto.appointment_system.exception.ClientException;
 import com.augusto.appointment_system.exception.ResourceNotFoundException;
+import com.augusto.appointment_system.mapper.ClientMapper;
 
 import static com.augusto.appointment_system.mapper.ClientMapper.*;
 
@@ -32,26 +33,23 @@ public class ClientService {
 
     public List<ClientDto> findAll() {
         return clientRepository.findAll().stream()
-                .map((client) -> mapToClientDto(client)).toList();
+                .map(ClientMapper::mapToClientDto).toList();
     }
 
     public ClientDto updateClient(ClientDto updatedClientDto, Long id) {
         validEmail(updatedClientDto.getEmail());
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Client", "id", id));
+        client.setName(updatedClientDto.getName());
         client.setEmail(updatedClientDto.getEmail());
-        client.setEmail(updatedClientDto.getName());
-        client.setEmail(updatedClientDto.getPhone());
+        client.setPhone(updatedClientDto.getPhone());
         client = clientRepository.save(client);
         return mapToClientDto(client);
     }
 
     public void deleteClientById(Long id) {
         clientRepository.findById(id)
-                .ifPresentOrElse(
-                        (client) -> {
-                            clientRepository.delete(client);
-                        },
+                .ifPresentOrElse(clientRepository::delete,
                         () -> {
                             throw new ResourceNotFoundException("client", "id", id);
                         });
