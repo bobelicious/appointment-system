@@ -32,8 +32,7 @@ jobs:
           token: ${{ secrets.TESTCONTAINERS_CLOUD_CLIENT_TOKEN }}
 
       - name: Build appointment Microservice Jar
-        working-directory: .
-        run: mvn clean package -X
+        run: ./mvnw verify
 
       - name: Install Docker Compose
         run: |
