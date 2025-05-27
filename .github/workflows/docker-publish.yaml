@@ -21,16 +21,11 @@ jobs:
           java-version: "21"
           distribution: "temurin"
           cache: "maven"
-          
+
       - name: Check Maven and Java
         run: |
           mvn -v
           java -version
-
-      - name: Setup testcontainers Cloud Client
-        uses: atomicjar/testcontainers-cloud-setup-action@v1
-        with:
-          token: ${{ secrets.TESTCONTAINERS_CLOUD_CLIENT_TOKEN }}
 
       - name: Build appointment Microservice Jar
         run: ./mvnw verify
