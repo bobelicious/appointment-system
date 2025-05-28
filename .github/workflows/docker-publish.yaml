@@ -47,7 +47,7 @@ jobs:
       - name: Push to Docker Hub Container Registry
         run: |
 
-          docker tag ${{ secrets.DOCKER_USERNAME }}/appointment-system:latest ${{ secrets.DOCKER_USERNAME }}/order-gen-user-service:${{github.run_id}}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/appointment-system:latest ${{ secrets.DOCKER_USERNAME }}/appointment-system:${{github.run_id}}
           
           docker push ${{ secrets.DOCKER_USERNAME }}/appointment-system:${{github.run_id}}
           docker push ${{ secrets.DOCKER_USERNAME }}/appointment-system:latest
