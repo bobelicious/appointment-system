@@ -28,7 +28,7 @@ jobs:
 
       - name: Build appointment Microservice Jar
         working-directory: .
-        run: mvn clean package -X
+        run: mvn clean package
 
       - name: Install Docker Compose
         run: |
@@ -46,7 +46,8 @@ jobs:
 
       - name: Push to Docker Hub Container Registry
         run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/appointment:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/appointment:${{github.run_id}}
-          docker tag ${{ secrets.DOCKER_USERNAME }}/appointment:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/appointment:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/appointment:${{github.run_id}}
-          docker push ${{ secrets.DOCKER_USERNAME }}/appointment:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/appointment-system:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/appointment-system:${{github.run_id}}
+          
+          docker tag ${{ secrets.DOCKER_USERNAME }}/appointment-system:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/appointment-system:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/appointment-system:${{github.run_id}}
+          docker push ${{ secrets.DOCKER_USERNAME }}/appointment-system:latest
