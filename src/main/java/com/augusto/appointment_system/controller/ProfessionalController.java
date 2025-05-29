@@ -44,7 +44,7 @@ public class ProfessionalController {
         return new ResponseEntity<>(professionalService.updateProfessional(professionalDto, id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id]}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteProfessional(@PathVariable Long Id) {
         professionalService.deleteProfessional(Id);
         return ResponseEntity.noContent().build();
