@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.augusto.appointment_system.dto.ClientDto;
-import com.augusto.appointment_system.exception.ClientException;
+import com.augusto.appointment_system.exception.AppointmentException;
 import com.augusto.appointment_system.exception.ResourceNotFoundException;
 import com.augusto.appointment_system.mapper.ClientMapper;
 
@@ -57,7 +57,7 @@ public class ClientService {
 
     private void validEmail(String email) {
         if (clientRepository.existsByEmail(email)) {
-            throw new ClientException(HttpStatus.BAD_REQUEST, "email already exist");
+            throw new AppointmentException(HttpStatus.BAD_REQUEST, "email already exist");
         }
     }
 }

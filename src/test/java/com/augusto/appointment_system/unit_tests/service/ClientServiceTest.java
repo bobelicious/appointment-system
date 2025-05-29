@@ -23,7 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.augusto.appointment_system.dto.ClientDto;
-import com.augusto.appointment_system.exception.ClientException;
+import com.augusto.appointment_system.exception.AppointmentException;
 import com.augusto.appointment_system.exception.ResourceNotFoundException;
 import com.augusto.appointment_system.model.Client;
 import com.augusto.appointment_system.repository.ClientRepository;
@@ -59,35 +59,25 @@ public class ClientServiceTest {
         toUpdateClient = new Client(null, "Jarad Antony Higgins", "jarad@email.com", "34992177249");
 
         try {
+
             clientDto = objectMapper.readValue(
                     new File(CLIENT_DTO_JSON_PATH),
                     ClientDto.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        try {
             clientDtoList = objectMapper.readValue(
                     new File(CLIENT_DTO_LIST_JSON_PATH),
                     new TypeReference<List<ClientDto>>() {
                     });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        try {
             client = objectMapper.readValue(
                     new File(CLIENT_JSON_PATH),
                     Client.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        try {
             clientList = objectMapper.readValue(
                     new File(CLIENT_LIST_JSON_PATH),
                     new TypeReference<List<Client>>() {
                     });
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,7 +102,7 @@ public class ClientServiceTest {
         // given - precodition or setup
         given(clientRepository.existsByEmail(clientDto.getEmail())).willReturn(true);
         // when - action or the behavior that we are goint to test
-        assertThrows(ClientException.class, () -> {
+        assertThrows(AppointmentException.class, () -> {
             clientService.saveClient(clientDto);
         });
         // then - verify the result
@@ -160,7 +150,7 @@ public class ClientServiceTest {
         // given - precodition or setup
         given(clientRepository.existsByEmail(updatedClientDto.getEmail())).willReturn(true);
         // when - action or the behavior that we are goint to test
-        assertThrows(ClientException.class, () -> {
+        assertThrows(AppointmentException.class, () -> {
             clientService.updateClient(updatedClientDto, 1L);
         });
         // then - verify the result

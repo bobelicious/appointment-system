@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ClientException extends RuntimeException {
+public class AppointmentException extends RuntimeException {
     private HttpStatus httpStatus;
     private String message;
 }
