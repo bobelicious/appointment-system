@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.augusto.appointment_system.dto.ProfessionalDto;
 import com.augusto.appointment_system.service.ProfessionalService;
 
-@RequestMapping
-@RestController("/api/v1/professional")
+@RestController
+@RequestMapping("/api/v1/professional")
 public class ProfessionalController {
     @Autowired
     private ProfessionalService professionalService;
@@ -33,7 +33,7 @@ public class ProfessionalController {
         return new ResponseEntity<>(professionalService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/list-all")
     public ResponseEntity<List<ProfessionalDto>> findAll() {
         return new ResponseEntity<>(professionalService.findAll(), HttpStatus.OK);
     }
@@ -45,8 +45,8 @@ public class ProfessionalController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteProfessional(@PathVariable Long Id) {
-        professionalService.deleteProfessional(Id);
+    public ResponseEntity<String> deleteProfessional(@PathVariable Long id) {
+        professionalService.deleteProfessional(id);
         return ResponseEntity.noContent().build();
     }
 }

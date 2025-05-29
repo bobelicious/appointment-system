@@ -1,5 +1,6 @@
 package com.augusto.appointment_system.exception;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,9 +19,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.augusto.appointment_system.dto.ErrorDetails;
-
-
-
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -38,13 +38,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<ErrorDetails> handleGlobal(DataIntegrityViolationException exception, WebRequest webRequest) {
-    ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
-        webRequest.getDescription(false));
-    return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-  }
-
   @ExceptionHandler(ResourceNotFoundException.class)
   public ResponseEntity<ErrorDetails> handleGlobal(ResourceNotFoundException exception, WebRequest webRequest) {
     ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
@@ -52,6 +45,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
   }
 
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<ErrorDetails> handleGlobal(DataIntegrityViolationException exception, WebRequest webRequest) {
+    ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+        webRequest.getDescription(false));
+    return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(exception = { StreamReadException.class, DatabindException.class, IOException.class })
+  public ResponseEntity<ErrorDetails> handleGlobal(IOException exception, WebRequest webRequest) {
+    ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+        webRequest.getDescription(false));
+    return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
   @Override
   @Nullable
