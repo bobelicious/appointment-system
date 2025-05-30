@@ -1,4 +1,4 @@
-package com.augusto.appointment_system.integrationtests.testcontainers;
+package com.augusto.appointment_system.integrationtests.testcontainers.controller;
 
 import static com.augusto.appointment_system.setup.SetupProfessional.professional;
 import static com.augusto.appointment_system.setup.SetupProfessional.professionalDto;
@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.augusto.appointment_system.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

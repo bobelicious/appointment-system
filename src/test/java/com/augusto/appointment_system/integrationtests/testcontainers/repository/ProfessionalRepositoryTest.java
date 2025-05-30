@@ -1,4 +1,4 @@
-package com.augusto.appointment_system.integrationtests.testcontainers;
+package com.augusto.appointment_system.integrationtests.testcontainers.repository;
 
 import static com.augusto.appointment_system.setup.SetupProfessional.professional;
 import static com.augusto.appointment_system.setup.SetupProfessional.professionalList;
@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.augusto.appointment_system.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
 
 @DataJpaTest
