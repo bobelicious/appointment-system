@@ -12,7 +12,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "appointments")
 public class Appointment {
@@ -21,11 +27,11 @@ public class Appointment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "client_id", referencedColumnName = "email", nullable = false)
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name = "professional_id", nullable = false)
+    @JoinColumn(name = "professional_email", referencedColumnName = "email", nullable = false)
     private Professional professional;
 
     @Column(nullable = false)
@@ -86,8 +92,4 @@ public class Appointment {
     public void setStatus(AppointmentStatus status) {
         this.status = status;
     }
-}
-
-enum AppointmentStatus {
-    SCHEDULED, CONFIRMED, CANCELLED, COMPLETED
 }
