@@ -40,6 +40,17 @@ public class ProfessionalRepositoryTest {
     }
 
     @Test
+    public void givenEmail_whenFindByEmail_thenReturnProfessionalEntity() throws Exception {
+        // given - precodition or setup
+        professionalRepository.save(professional());
+        // when - action or the behavior that we are goint to test
+        var professional = professionalRepository.findProfessionalByEmail(professional().getEmail());
+        // then - verify result
+        assertThat(professional).isNotEmpty();
+        assertThat(professional.get().getEmail()).isEqualTo(professional().getEmail());
+    }
+
+    @Test
     public void givenListProfessional_whenSelectAll_thenReturnListOfProfessionals() throws Exception {
         // given - precodition or setup
         professionalRepository.saveAll(professionalList());

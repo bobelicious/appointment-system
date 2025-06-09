@@ -17,14 +17,21 @@ import com.augusto.appointment_system.dto.AppointmentDto;
 import com.augusto.appointment_system.exception.AppointmentException;
 import com.augusto.appointment_system.exception.ResourceNotFoundException;
 import com.augusto.appointment_system.model.AppointmentStatus;
+import com.augusto.appointment_system.model.Availability;
 import com.augusto.appointment_system.model.Client;
 import com.augusto.appointment_system.model.Professional;
 import com.augusto.appointment_system.repository.AppointmentRepository;
+import com.augusto.appointment_system.repository.AvailabilityRepository;
 import com.augusto.appointment_system.repository.ClientRepository;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class AppointmentService {
+
+    @Autowired
+    private final AvailabilityRepository availabilityRepository;
     @Autowired
     private AppointmentRepository appointmentRepository;
     @Autowired
@@ -36,45 +43,57 @@ public class AppointmentService {
     @Autowired
     private Environment environment;
 
+    AppointmentService(AvailabilityRepository availabilityRepository) {
+        this.availabilityRepository = availabilityRepository;
+    }
+
+    @Transactional
     public AppointmentDto createAppointment(AppointmentDto appointmentDto) throws UnknownHostException {
-        validateAppointmentDateTime(appointmentDto.startTime(), appointmentDto.endTime());
-        var client = validAteAndFindAppointmentClient(appointmentDto.clientEmail());
-        var professional = validAteAndFindAppointmentProfessional(appointmentDto.professionalEmail());
+
+        validateAppointmentDateTime(appointmentDto.startTime());
+
+        var professional = getValidatedProfessional(appointmentDto.professionalEmail());
+        var client = getValidatedClient(appointmentDto.clientEmail());
+        
+        var availibility = checkAvailability(professional.getEmail(), appointmentDto.startTime());
+        
+        var endTime = appointmentDto.startTime().plusMinutes(availibility.getAppointmentDurationMinutes());
         var appointment = mapToAppointment(appointmentDto, client, professional);
+        appointment.setEndTime(endTime);
         appointment.setStatus(AppointmentStatus.SCHEDULED);
         appointment = appointmentRepository.save(appointment);
+
         sendEmail(appointmentDto.clientEmail(),
                 "Confirmacao de agendamento", generateConfirmLink(appointment.getId()));
         return mapToappointmentDto(appointment);
     }
 
+    @Transactional
     public String confirmAppointment(Long id) {
         var appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment confirmation", "id", id));
         appointment.setStatus(AppointmentStatus.CONFIRMED);
         appointmentRepository.save(appointment);
+        var message = String.format("Agendamento confirmado com sucesso, id: %s", appointment.getId());
+        sendEmail(appointment.getProfessional().getEmail(), "Confirmacao de agendamento", message);
         return "Status confirmed successful";
     }
 
-    private Client validAteAndFindAppointmentClient(String clientEmail) {
+    private Client getValidatedClient(String clientEmail) {
         return clientRepository.findClientByEmail(clientEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("Client", "email", clientEmail));
     }
 
-    private Professional validAteAndFindAppointmentProfessional(String professionalEmail) {
+    private Professional getValidatedProfessional(String professionalEmail) {
 
         return professionalRepository.findProfessionalByEmail(professionalEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("Professional", "email", professionalEmail));
     }
 
-    private void validateAppointmentDateTime(LocalDateTime startTime, LocalDateTime endTime) {
+    private void validateAppointmentDateTime(LocalDateTime startTime) {
         var timeNow = LocalDateTime.now();
         if (timeNow.isAfter(startTime)) {
             throw new AppointmentException(HttpStatus.BAD_REQUEST, "Start time is in the past");
-        }
-
-        if (startTime.isAfter(endTime)) {
-            throw new AppointmentException(HttpStatus.BAD_REQUEST, "End time is before than startTime");
         }
     }
 
@@ -88,6 +107,21 @@ public class AppointmentService {
         return String.format(
                 "Agendamento feito com sucesso, confirme no link a seguir http://%s:%s/api/v1/appointment/confirm/%s",
                 host, port, id);
+    }
+
+    private Availability checkAvailability(String professionalEmail, LocalDateTime starTime) {
+        var availability = availabilityRepository.findAvailabilityByProfessionalEmail(professionalEmail).orElseThrow(
+                () -> new ResourceNotFoundException("Availibility", "professionalEmail", professionalEmail));
+        var contains = availability.getAvailableDays().stream().anyMatch((day) -> starTime.getDayOfWeek().equals(day));
+        if (!contains) {
+            throw new AppointmentException(HttpStatus.BAD_REQUEST, "Unavailable day");
+        }
+        if (appointmentRepository.existsByStartTimeAndProfessionalEmail(starTime, professionalEmail)
+                || availability.getStartTime().isAfter(starTime.toLocalTime())
+                || availability.getEndTime().isBefore(starTime.toLocalTime())) {
+            throw new AppointmentException(HttpStatus.BAD_REQUEST, "Unavailable time");
+        }
+        return availability;
     }
 
 }

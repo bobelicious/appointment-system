@@ -41,10 +41,22 @@ public class ClientRepositoryTest {
     }
 
     @Test
+    public void givenEmail_whenFindByEmail_thenReturnClientEntity() throws IOException {
+        // given - precodition or setup
+        clientRepository.save(client());
+        // when - action or the behavior that we are going to test
+        var client = clientRepository.findClientByEmail(client().getEmail());
+
+        // then - verify result
+        assertThat(client).isNotEmpty();
+        assertThat(client.get().getEmail()).isEqualTo(client().getEmail());
+    }
+
+    @Test
     public void givenListClient_whenSelectAll_thenReturnListOfClients() throws Exception {
         // given - precodition or setup
         clientRepository.saveAll(clientList());
-        // when - action or the behavior that we are goint to test
+        // when - action or the behavior that we are goin to test
         var result = clientRepository.findAll();
         // then - verify the result
         assertThat(result).isNotEmpty();

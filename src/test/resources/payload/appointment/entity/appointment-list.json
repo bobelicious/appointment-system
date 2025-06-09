@@ -1,0 +1,56 @@
+[
+    {
+        "id": null,
+        "client": {
+            "id": null,
+            "name": "John Doe",
+            "email": "a@email.com",
+            "phone": "3499999999"
+        },
+        "professional": {
+            "id": null,
+            "name": "Dr Smith",
+            "email": "a@email.com",
+            "specialty": "Cardiology"
+        },
+        "startTime": "2025-06-10T11:22:00",
+        "endTime": "2025-06-10T12:07:00",
+        "status": "SCHEDULED"
+    },
+    {
+        "id": null,
+        "client": {
+            "id": null,
+            "name": "John Doe",
+            "email": "a@email.com",
+            "phone": "3499999999"
+        },
+        "professional": {
+            "id": null,
+            "name": "Dr Pedro",
+            "email": "b@email.com",
+            "specialty": "Cardiology"
+        },
+        "startTime": "2025-06-10T10:22:00",
+        "endTime": "2025-06-10T11:07:00",
+        "status": "SCHEDULED"
+    },
+    {
+        "id": null,
+        "client": {
+            "id": null,
+            "name": "John Doe",
+            "email": "a@gmail.com",
+            "phone": "3499999999"
+        },
+        "professional": {
+            "id": null,
+            "name": "Plinio",
+            "email": "p@email.com",
+            "specialty": "Cardiology"
+        },
+        "startTime": "2025-06-10T10:22:00",
+        "endTime": "2025-06-10T11:07:00",
+        "status": "SCHEDULED"
+    }
+]
