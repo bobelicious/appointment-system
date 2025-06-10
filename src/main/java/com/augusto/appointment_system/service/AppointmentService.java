@@ -31,21 +31,22 @@ import jakarta.transaction.Transactional;
 public class AppointmentService {
 
     @Autowired
-    private final AvailabilityRepository availabilityRepository;
+    private AvailabilityRepository availabilityRepository;
+
     @Autowired
     private AppointmentRepository appointmentRepository;
+
     @Autowired
     private ClientRepository clientRepository;
+
     @Autowired
     private ProfessionalRepository professionalRepository;
+
     @Autowired
     private MailConfig mailConfig;
+
     @Autowired
     private Environment environment;
-
-    AppointmentService(AvailabilityRepository availabilityRepository) {
-        this.availabilityRepository = availabilityRepository;
-    }
 
     @Transactional
     public AppointmentDto createAppointment(AppointmentDto appointmentDto) throws UnknownHostException {
@@ -53,11 +54,11 @@ public class AppointmentService {
         validateAppointmentDateTime(appointmentDto.startTime());
 
         var professional = getValidatedProfessional(appointmentDto.professionalEmail());
+        var availability = checkAvailability(professional.getEmail(), appointmentDto.startTime());
         var client = getValidatedClient(appointmentDto.clientEmail());
         
-        var availibility = checkAvailability(professional.getEmail(), appointmentDto.startTime());
         
-        var endTime = appointmentDto.startTime().plusMinutes(availibility.getAppointmentDurationMinutes());
+        var endTime = appointmentDto.startTime().plusMinutes(availability.getAppointmentDurationMinutes());
         var appointment = mapToAppointment(appointmentDto, client, professional);
         appointment.setEndTime(endTime);
         appointment.setStatus(AppointmentStatus.SCHEDULED);
@@ -111,7 +112,8 @@ public class AppointmentService {
 
     private Availability checkAvailability(String professionalEmail, LocalDateTime starTime) {
         var availability = availabilityRepository.findAvailabilityByProfessionalEmail(professionalEmail).orElseThrow(
-                () -> new ResourceNotFoundException("Availibility", "professionalEmail", professionalEmail));
+                () -> new ResourceNotFoundException("Availability", "professionalEmail", professionalEmail));
+                
         var contains = availability.getAvailableDays().stream().anyMatch((day) -> starTime.getDayOfWeek().equals(day));
         if (!contains) {
             throw new AppointmentException(HttpStatus.BAD_REQUEST, "Unavailable day");
