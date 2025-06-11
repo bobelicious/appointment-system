@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.augusto.appointment_system.integrationtests.testcontainers.AbstractIntegrationTest;
+import com.augusto.appointment_system.repository.AppointmentRepository;
 import com.augusto.appointment_system.repository.ClientRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,11 +36,13 @@ public class ClientControllerTest extends AbstractIntegrationTest {
     private MockMvc mockMvc;
     @Autowired
     private ClientRepository clientRepository;
-
+    @Autowired
+    private AppointmentRepository appointmentRepository;
     ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setup() {
+        appointmentRepository.deleteAll();
         clientRepository.deleteAll();
     }
 

@@ -80,8 +80,11 @@ public class AppointmentControllerTest extends AbstractIntegrationTest {
     void givenAppointmentId_whenConfirmAppointment_thenReturnMessageConfirmation()
             throws JsonProcessingException, Exception {
         // given - precodition or setup
-        var appointment = appointmentRepository.save(appointment());
-
+        var appointment = appointment();
+        appointment.setProfessional(professionalRepository.save(professional()));
+        appointment.setClient(clientRepository.save(client()));
+        availabilityRepository.save(availability());
+        appointmentRepository.save(appointment);
         // when - action or behaviour that we are goint test
         var result = mockMvc.perform(get("/api/v1/appointment/confirm/{id}", appointment.getId()));
 

@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -17,10 +18,15 @@ import com.augusto.appointment_system.integrationtests.testcontainers.AbstractIn
 import com.augusto.appointment_system.repository.ProfessionalRepository;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE )
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class ProfessionalRepositoryTest extends AbstractIntegrationTest {
     @Autowired
     ProfessionalRepository professionalRepository;
+
+    @BeforeEach
+    void setup() {
+        professionalRepository.deleteAll();
+    }
 
     @Test
     public void givenProfessional_whenSave_thenReturnSavedProfesssional() throws IOException {

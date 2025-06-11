@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -21,6 +22,11 @@ import com.augusto.appointment_system.repository.ClientRepository;
 public class ClientRepositoryTest extends AbstractIntegrationTest {
     @Autowired
     ClientRepository clientRepository;
+
+    @BeforeEach
+    void setup() {
+        clientRepository.deleteAll();
+    }
 
     @Test
     public void givenClient_whenSave_thenReturnSavedEmoployee() throws IOException {
