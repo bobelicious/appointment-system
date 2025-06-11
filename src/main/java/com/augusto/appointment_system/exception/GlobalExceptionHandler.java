@@ -24,53 +24,53 @@ import com.fasterxml.jackson.databind.DatabindException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-  @ExceptionHandler(AppointmentException.class)
-  public ResponseEntity<ErrorDetails> handleGlobal(AppointmentException exception, WebRequest webRequest) {
-    ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
-        webRequest.getDescription(false));
-    return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-  }
+    @ExceptionHandler(AppointmentException.class)
+    public ResponseEntity<ErrorDetails> handleGlobal(AppointmentException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 
-  @ExceptionHandler(RuntimeException.class)
-  public ResponseEntity<ErrorDetails> handleGlobal(RuntimeException exception, WebRequest webRequest) {
-    ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
-        webRequest.getDescription(false));
-    return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-  }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorDetails> handleGlobal(RuntimeException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-  @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<ErrorDetails> handleGlobal(ResourceNotFoundException exception, WebRequest webRequest) {
-    ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
-        webRequest.getDescription(false));
-    return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-  }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleGlobal(ResourceNotFoundException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
 
-  @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<ErrorDetails> handleGlobal(DataIntegrityViolationException exception, WebRequest webRequest) {
-    ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
-        webRequest.getDescription(false));
-    return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-  }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorDetails> handleGlobal(DataIntegrityViolationException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 
-  @ExceptionHandler(exception = { StreamReadException.class, DatabindException.class, IOException.class })
-  public ResponseEntity<ErrorDetails> handleGlobal(IOException exception, WebRequest webRequest) {
-    ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
-        webRequest.getDescription(false));
-    return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-  }
+    @ExceptionHandler(exception = { StreamReadException.class, DatabindException.class, IOException.class })
+    public ResponseEntity<ErrorDetails> handleGlobal(IOException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-  @Override
-  @Nullable
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-      HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    Map<String, String> errors = new HashMap<>();
-    ex.getBindingResult().getAllErrors().forEach((error) -> {
-      String fieldName = ((FieldError) error).getField();
-      String message = error.getDefaultMessage();
-      errors.put(fieldName, message);
-    });
+    @Override
+    @Nullable
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String message = error.getDefaultMessage();
+            errors.put(fieldName, message);
+        });
 
-    return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-  }
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 
 }

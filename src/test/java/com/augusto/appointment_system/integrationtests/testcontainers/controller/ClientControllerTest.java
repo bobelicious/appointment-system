@@ -31,90 +31,90 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 public class ClientControllerTest extends AbstractIntegrationTest {
 
-        @Autowired
-        private MockMvc mockMvc;
-        @Autowired
-        private ClientRepository clientRepository;
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private ClientRepository clientRepository;
 
-        ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper();
 
-        @BeforeEach
-        void setup() {
-                clientRepository.deleteAll();
-        }
+    @BeforeEach
+    void setup() {
+        clientRepository.deleteAll();
+    }
 
-        @Test
-        void givenClientDto_whenSaveClient_thenReturnClientDto() throws JsonProcessingException, Exception {
-                // given - precodition or setup
+    @Test
+    void givenClientDto_whenSaveClient_thenReturnClientDto() throws JsonProcessingException, Exception {
+        // given - precodition or setup
 
-                // when - action or behaviour that we are goint test
-                var result = mockMvc.perform(post("/api/v1/client/new")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(clientDto())));
+        // when - action or behaviour that we are goint test
+        var result = mockMvc.perform(post("/api/v1/client/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(clientDto())));
 
-                // then - verify
-                result.andExpect(status().isCreated())
-                                .andExpect(jsonPath("$.name",
-                                                is(clientDto().getName())))
-                                .andExpect(jsonPath("$.email",
-                                                is(clientDto().getEmail())));
-        }
+        // then - verify
+        result.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name",
+                        is(clientDto().getName())))
+                .andExpect(jsonPath("$.email",
+                        is(clientDto().getEmail())));
+    }
 
-        @Test
-        void givenClientId_whenFindById_thenReturnClientDto() throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                var client = clientRepository.save(client());
+    @Test
+    void givenClientId_whenFindById_thenReturnClientDto() throws JsonProcessingException, Exception {
+        // given - precodition or setup
+        var client = clientRepository.save(client());
 
-                // when - action or behaviour that we are goint test
-                var result = mockMvc.perform(get("/api/v1/client/{id}", client.getId()));
+        // when - action or behaviour that we are goint test
+        var result = mockMvc.perform(get("/api/v1/client/{id}", client.getId()));
 
-                // then - verify result
-                result.andExpect(status().isOk())
-                                .andExpect(jsonPath("$.name", is(clientDto().getName())))
-                                .andExpect(jsonPath("$.email", is(clientDto().getEmail())));
-        }
+        // then - verify result
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(clientDto().getName())))
+                .andExpect(jsonPath("$.email", is(clientDto().getEmail())));
+    }
 
-        @Test
-        void givenClientList_whenFindAll_thenReturnListOfClientDto() throws Exception {
-                // given - precodition or setup
-                clientRepository.saveAll(clientList());
+    @Test
+    void givenClientList_whenFindAll_thenReturnListOfClientDto() throws Exception {
+        // given - precodition or setup
+        clientRepository.saveAll(clientList());
 
-                // when - action or behaviour that we are goint to test
-                var result = mockMvc.perform(get("/api/v1/client/list-all"));
+        // when - action or behaviour that we are goint to test
+        var result = mockMvc.perform(get("/api/v1/client/list-all"));
 
-                // then - verify result
-                result.andExpect(status().isOk())
-                                .andExpect(jsonPath("$.size()", is(clientDtoList().size())));
-        }
+        // then - verify result
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(clientDtoList().size())));
+    }
 
-        @Test
-        void givenClientDto_whenUpdate_thenReturnClientDto() throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                var client = clientRepository.save(client());
+    @Test
+    void givenClientDto_whenUpdate_thenReturnClientDto() throws JsonProcessingException, Exception {
+        // given - precodition or setup
+        var client = clientRepository.save(client());
 
-                // when - action or behaviour that we are goint to test
-                var result = mockMvc.perform(
-                                put("/api/v1/client/update/{id}", client.getId())
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .content(objectMapper.writeValueAsString(updatedClientDto())));
+        // when - action or behaviour that we are goint to test
+        var result = mockMvc.perform(
+                put("/api/v1/client/update/{id}", client.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedClientDto())));
 
-                // then - verify result
-                result.andExpect(status().isOk())
-                                .andExpect(jsonPath("$.name", is(updatedClientDto().getName())))
-                                .andExpect(jsonPath("$.email", is(updatedClientDto().getEmail())))
-                                .andExpect(jsonPath("$.phone", is(updatedClientDto().getPhone())));
+        // then - verify result
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(updatedClientDto().getName())))
+                .andExpect(jsonPath("$.email", is(updatedClientDto().getEmail())))
+                .andExpect(jsonPath("$.phone", is(updatedClientDto().getPhone())));
 
-        }
+    }
 
-        @Test
-        void givenClientId_whenDeleteClient_thenVerify() throws Exception {
-                // given - precodition or setup
-                var client = clientRepository.save(client());
-                // when - action or the behaviour that we are goin test
-                var result = mockMvc.perform(delete("/api/v1/client/delete/{id}", client.getId()));
+    @Test
+    void givenClientId_whenDeleteClient_thenVerify() throws Exception {
+        // given - precodition or setup
+        var client = clientRepository.save(client());
+        // when - action or the behaviour that we are goin test
+        var result = mockMvc.perform(delete("/api/v1/client/delete/{id}", client.getId()));
 
-                // then - verify
-                result.andExpect(status().isNoContent());
-        }
+        // then - verify
+        result.andExpect(status().isNoContent());
+    }
 
 }

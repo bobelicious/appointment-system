@@ -34,152 +34,152 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest
 public class ClientControllerTest {
-        @Autowired
-        private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-        @MockitoBean
-        private ClientService clientService;
-        @MockitoBean
-        private ProfessionalService professionalService;
-        @MockitoBean
-        private AppointmentService appointmentService;
-        @MockitoBean
-        private AvailabilityController availabilityController;
+	@MockitoBean
+	private ClientService clientService;
+	@MockitoBean
+	private ProfessionalService professionalService;
+	@MockitoBean
+	private AppointmentService appointmentService;
+	@MockitoBean
+	private AvailabilityController availabilityController;
 
-        ObjectMapper objectMapper = new ObjectMapper();
+	ObjectMapper objectMapper = new ObjectMapper();
 
-        @Test
-        void givenClientDto_whenSaveClient_thenReturnClientDto() throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(clientService.saveClient(any(ClientDto.class)))
-                                .willAnswer((invocation) -> invocation.getArgument(0));
+	@Test
+	void givenClientDto_whenSaveClient_thenReturnClientDto() throws JsonProcessingException, Exception {
+		// given - precodition or setup
+		given(clientService.saveClient(any(ClientDto.class)))
+				.willAnswer((invocation) -> invocation.getArgument(0));
 
-                // when - action or behaviour that we are goint test
-                var result = mockMvc.perform(post("/api/v1/client/new")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(clientDto())));
+		// when - action or behaviour that we are goint test
+		var result = mockMvc.perform(post("/api/v1/client/new")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(clientDto())));
 
-                // then - verify
-                result.andExpect(status().isCreated())
-                                .andExpect(jsonPath("$.name",
-                                                is(clientDto().getName())))
-                                .andExpect(jsonPath("$.email",
-                                                is(clientDto().getEmail())));
-        }
+		// then - verify
+		result.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.name",
+						is(clientDto().getName())))
+				.andExpect(jsonPath("$.email",
+						is(clientDto().getEmail())));
+	}
 
-        @Test
-        void givenClientDto_whenSaveClient_thenThrowsAppointmentException() throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(clientService.saveClient(any(ClientDto.class)))
-                                .willThrow(AppointmentException.class);
+	@Test
+	void givenClientDto_whenSaveClient_thenThrowsAppointmentException() throws JsonProcessingException, Exception {
+		// given - precodition or setup
+		given(clientService.saveClient(any(ClientDto.class)))
+				.willThrow(AppointmentException.class);
 
-                // when - action or behaviour that we are goint test
-                var result = mockMvc.perform(post("/api/v1/client/new")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(clientDto())));
+		// when - action or behaviour that we are goint test
+		var result = mockMvc.perform(post("/api/v1/client/new")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(clientDto())));
 
-                // then - verify
-                result.andExpect(status().isBadRequest());
-        }
+		// then - verify
+		result.andExpect(status().isBadRequest());
+	}
 
-        @Test
-        void givenClientId_whenFindById_thenReturnClientDto() throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(clientService.findClientById(1L))
-                                .willReturn(clientDto());
-                // when - action or behaviour that we are goint test
-                var result = mockMvc.perform(get("/api/v1/client/{id}", 1L));
+	@Test
+	void givenClientId_whenFindById_thenReturnClientDto() throws JsonProcessingException, Exception {
+		// given - precodition or setup
+		given(clientService.findClientById(1L))
+				.willReturn(clientDto());
+		// when - action or behaviour that we are goint test
+		var result = mockMvc.perform(get("/api/v1/client/{id}", 1L));
 
-                // then - verify result
-                result.andExpect(status().isOk())
-                                .andExpect(jsonPath("$.name", is(clientDto().getName())))
-                                .andExpect(jsonPath("$.email", is(clientDto().getEmail())));
-        }
+		// then - verify result
+		result.andExpect(status().isOk())
+				.andExpect(jsonPath("$.name", is(clientDto().getName())))
+				.andExpect(jsonPath("$.email", is(clientDto().getEmail())));
+	}
 
-        @Test
-        void givenClientList_whenFindAll_thenReturnListOfClientDto() throws Exception {
-                // given - precodition or setup
-                given(clientService.findAll())
-                                .willReturn(clientDtoList());
-                // when - action or behaviour that we are goint to test
-                var result = mockMvc.perform(get("/api/v1/client/list-all"));
+	@Test
+	void givenClientList_whenFindAll_thenReturnListOfClientDto() throws Exception {
+		// given - precodition or setup
+		given(clientService.findAll())
+				.willReturn(clientDtoList());
+		// when - action or behaviour that we are goint to test
+		var result = mockMvc.perform(get("/api/v1/client/list-all"));
 
-                // then - verify result
-                result.andExpect(status().isOk())
-                                .andExpect(jsonPath("$.size()", is(clientDtoList().size())));
-        }
+		// then - verify result
+		result.andExpect(status().isOk())
+				.andExpect(jsonPath("$.size()", is(clientDtoList().size())));
+	}
 
-        @Test
-        void givenClientDto_whenUpdate_thenReturnClientDto() throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(clientService.updateClient(any(ClientDto.class), any(Long.class)))
-                                .willAnswer((invocation) -> invocation.getArgument(0));
-                // when - action or behaviour that we are goint to test
-                var result = mockMvc.perform(
-                                put("/api/v1/client/update/{id}", 1L)
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .content(objectMapper.writeValueAsString(updatedClientDto())));
+	@Test
+	void givenClientDto_whenUpdate_thenReturnClientDto() throws JsonProcessingException, Exception {
+		// given - precodition or setup
+		given(clientService.updateClient(any(ClientDto.class), any(Long.class)))
+				.willAnswer((invocation) -> invocation.getArgument(0));
+		// when - action or behaviour that we are goint to test
+		var result = mockMvc.perform(
+				put("/api/v1/client/update/{id}", 1L)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(updatedClientDto())));
 
-                // then - verify result
-                result.andExpect(status().isOk())
-                                .andExpect(jsonPath("$.name", is(updatedClientDto().getName())))
-                                .andExpect(jsonPath("$.email", is(updatedClientDto().getEmail())))
-                                .andExpect(jsonPath("$.phone", is(updatedClientDto().getPhone())));
+		// then - verify result
+		result.andExpect(status().isOk())
+				.andExpect(jsonPath("$.name", is(updatedClientDto().getName())))
+				.andExpect(jsonPath("$.email", is(updatedClientDto().getEmail())))
+				.andExpect(jsonPath("$.phone", is(updatedClientDto().getPhone())));
 
-        }
+	}
 
-        @Test
-        void givenClientDto_whenUpdate_thenThrowsRetunrNotFoundException() throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(clientService.updateClient(any(ClientDto.class), any(Long.class)))
-                                .willThrow(ResourceNotFoundException.class);
-                // when - action or behaviour that we are goint to test
-                var result = mockMvc.perform(
-                                put("/api/v1/client/update/{id}", 1L)
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .content(objectMapper.writeValueAsString(updatedClientDto())));
+	@Test
+	void givenClientDto_whenUpdate_thenThrowsRetunrNotFoundException() throws JsonProcessingException, Exception {
+		// given - precodition or setup
+		given(clientService.updateClient(any(ClientDto.class), any(Long.class)))
+				.willThrow(ResourceNotFoundException.class);
+		// when - action or behaviour that we are goint to test
+		var result = mockMvc.perform(
+				put("/api/v1/client/update/{id}", 1L)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(updatedClientDto())));
 
-                // then - verify result
-                result.andExpect(status().isNotFound());
-        }
+		// then - verify result
+		result.andExpect(status().isNotFound());
+	}
 
-        @Test
-        void givenClientDto_whenUpdate_thenThrowsAppointmentException() throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(clientService.updateClient(any(ClientDto.class), any(Long.class)))
-                                .willThrow(AppointmentException.class);
-                // when - action or behaviour that we are goint to test
-                var result = mockMvc.perform(
-                                put("/api/v1/client/update/{id}", 1L)
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .content(objectMapper.writeValueAsString(updatedClientDto())));
+	@Test
+	void givenClientDto_whenUpdate_thenThrowsAppointmentException() throws JsonProcessingException, Exception {
+		// given - precodition or setup
+		given(clientService.updateClient(any(ClientDto.class), any(Long.class)))
+				.willThrow(AppointmentException.class);
+		// when - action or behaviour that we are goint to test
+		var result = mockMvc.perform(
+				put("/api/v1/client/update/{id}", 1L)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(updatedClientDto())));
 
-                // then - verify result
-                result.andExpect(status().isBadRequest());
-        }
+		// then - verify result
+		result.andExpect(status().isBadRequest());
+	}
 
-        @Test
-        void givenClientId_whenDeleteClient_thenVerify() throws Exception {
-                // given - precodition or setup
-                willDoNothing().given(clientService).deleteClientById(1L);
+	@Test
+	void givenClientId_whenDeleteClient_thenVerify() throws Exception {
+		// given - precodition or setup
+		willDoNothing().given(clientService).deleteClientById(1L);
 
-                // when - action or the behaviour that we are goin test
-                var result = mockMvc.perform(delete("/api/v1/client/delete/{id}", 1L));
+		// when - action or the behaviour that we are goin test
+		var result = mockMvc.perform(delete("/api/v1/client/delete/{id}", 1L));
 
-                // then - verify
-                result.andExpect(status().isNoContent());
-        }
+		// then - verify
+		result.andExpect(status().isNoContent());
+	}
 
-        @Test
-        void givenClientId_whenDeleteClient_thenThrowsResourceNotFoundException() throws Exception {
-                // given - precodition or setup
-                willThrow(ResourceNotFoundException.class)
-                                .given(clientService)
-                                .deleteClientById(1L);
-                // when - action or the behaviour that we are goin test
-                var result = mockMvc.perform(delete("/api/v1/client/delete/{id}", 1L));
+	@Test
+	void givenClientId_whenDeleteClient_thenThrowsResourceNotFoundException() throws Exception {
+		// given - precodition or setup
+		willThrow(ResourceNotFoundException.class)
+				.given(clientService)
+				.deleteClientById(1L);
+		// when - action or the behaviour that we are goin test
+		var result = mockMvc.perform(delete("/api/v1/client/delete/{id}", 1L));
 
-                // then - verify
-                result.andExpect(status().isNotFound());
-        }
+		// then - verify
+		result.andExpect(status().isNotFound());
+	}
 }

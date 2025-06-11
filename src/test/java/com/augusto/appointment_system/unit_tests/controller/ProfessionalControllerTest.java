@@ -34,160 +34,160 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest
 public class ProfessionalControllerTest {
-        @Autowired
-        private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-        @MockitoBean
-        private ClientService clientService;
-        @MockitoBean
-        private ProfessionalService professionalService;
-        @MockitoBean
-        private AppointmentService appointmentService;
-        @MockitoBean
-        private AvailabilityController availabilityController;
+    @MockitoBean
+    private ClientService clientService;
+    @MockitoBean
+    private ProfessionalService professionalService;
+    @MockitoBean
+    private AppointmentService appointmentService;
+    @MockitoBean
+    private AvailabilityController availabilityController;
 
-        ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper();
 
-        @Test
-        void givenProfessionalDto_whenSaveProfessional_thenReturnProfessionalDto()
-                        throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(professionalService.saveProfessional(any(ProfessionalDto.class)))
-                                .willAnswer((invocation) -> invocation.getArgument(0));
+    @Test
+    void givenProfessionalDto_whenSaveProfessional_thenReturnProfessionalDto()
+            throws JsonProcessingException, Exception {
+        // given - precodition or setup
+        given(professionalService.saveProfessional(any(ProfessionalDto.class)))
+                .willAnswer((invocation) -> invocation.getArgument(0));
 
-                // when - action or behaviour that we are goint test
-                var result = mockMvc.perform(post("/api/v1/professional/new")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(professionalDto())));
+        // when - action or behaviour that we are goint test
+        var result = mockMvc.perform(post("/api/v1/professional/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(professionalDto())));
 
-                // then - verify
-                result.andExpect(status().isCreated())
-                                .andExpect(jsonPath("$.name",
-                                                is(professionalDto().name())))
-                                .andExpect(jsonPath("$.email",
-                                                is(professionalDto().email())))
-                                .andExpect(jsonPath("$.specialty",
-                                                is(professionalDto().specialty())));
-        }
+        // then - verify
+        result.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name",
+                        is(professionalDto().name())))
+                .andExpect(jsonPath("$.email",
+                        is(professionalDto().email())))
+                .andExpect(jsonPath("$.specialty",
+                        is(professionalDto().specialty())));
+    }
 
-        @Test
-        void givenProfessionalDto_whenSaveProfessional_thenThrowsAppointmentException()
-                        throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(professionalService.saveProfessional(any(ProfessionalDto.class)))
-                                .willThrow(AppointmentException.class);
+    @Test
+    void givenProfessionalDto_whenSaveProfessional_thenThrowsAppointmentException()
+            throws JsonProcessingException, Exception {
+        // given - precodition or setup
+        given(professionalService.saveProfessional(any(ProfessionalDto.class)))
+                .willThrow(AppointmentException.class);
 
-                // when - action or behaviour that we are goint test
-                var result = mockMvc.perform(post("/api/v1/professional/new")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(professionalDto())));
+        // when - action or behaviour that we are goint test
+        var result = mockMvc.perform(post("/api/v1/professional/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(professionalDto())));
 
-                // then - verify
-                result.andExpect(status().isBadRequest());
-        }
+        // then - verify
+        result.andExpect(status().isBadRequest());
+    }
 
-        @Test
-        void givenProfessionalId_whenFindById_thenReturnProfessionalDto() throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(professionalService.findById(1L))
-                                .willReturn(professionalDto());
-                // when - action or behaviour that we are goint test
-                var result = mockMvc.perform(get("/api/v1/professional/{id}", 1L));
+    @Test
+    void givenProfessionalId_whenFindById_thenReturnProfessionalDto() throws JsonProcessingException, Exception {
+        // given - precodition or setup
+        given(professionalService.findById(1L))
+                .willReturn(professionalDto());
+        // when - action or behaviour that we are goint test
+        var result = mockMvc.perform(get("/api/v1/professional/{id}", 1L));
 
-                // then - verify result
-                result.andExpect(status().isOk())
-                                .andExpect(jsonPath("$.name", is(professionalDto().name())))
-                                .andExpect(jsonPath("$.email", is(professionalDto().email())))
-                                .andExpect(jsonPath("$.specialty", is(professionalDto().specialty())));
-        }
+        // then - verify result
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(professionalDto().name())))
+                .andExpect(jsonPath("$.email", is(professionalDto().email())))
+                .andExpect(jsonPath("$.specialty", is(professionalDto().specialty())));
+    }
 
-        @Test
-        void givenProfessionalList_whenFindAll_thenReturnListOfProfessionalDto() throws Exception {
-                // given - precodition or setup
-                given(professionalService.findAll())
-                                .willReturn(professionalDtoList());
-                // when - action or behaviour that we are goint to test
-                var result = mockMvc.perform(get("/api/v1/professional/list-all"));
+    @Test
+    void givenProfessionalList_whenFindAll_thenReturnListOfProfessionalDto() throws Exception {
+        // given - precodition or setup
+        given(professionalService.findAll())
+                .willReturn(professionalDtoList());
+        // when - action or behaviour that we are goint to test
+        var result = mockMvc.perform(get("/api/v1/professional/list-all"));
 
-                // then - verify result
-                result.andExpect(status().isOk())
-                                .andExpect(jsonPath("$.size()", is(professionalDtoList().size())));
-        }
+        // then - verify result
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(professionalDtoList().size())));
+    }
 
-        @Test
-        void givenProfessionalDto_whenUpdate_thenReturnProfessionalDto() throws JsonProcessingException, Exception {
-                // given - precodition or setup
+    @Test
+    void givenProfessionalDto_whenUpdate_thenReturnProfessionalDto() throws JsonProcessingException, Exception {
+        // given - precodition or setup
 
-                given(professionalService.updateProfessional(any(ProfessionalDto.class), any(Long.class)))
-                                .willAnswer((invocation) -> invocation.getArgument(0));
-                // when - action or behaviour that we are goint to test
-                var result = mockMvc.perform(
-                                put("/api/v1/professional/update/{id}", 1L)
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .content(objectMapper.writeValueAsString(updatedProfessionalDto())));
+        given(professionalService.updateProfessional(any(ProfessionalDto.class), any(Long.class)))
+                .willAnswer((invocation) -> invocation.getArgument(0));
+        // when - action or behaviour that we are goint to test
+        var result = mockMvc.perform(
+                put("/api/v1/professional/update/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedProfessionalDto())));
 
-                // then - verify result
-                result.andExpect(status().isOk())
-                                .andExpect(jsonPath("$.name", is(updatedProfessionalDto().name())))
-                                .andExpect(jsonPath("$.email", is(updatedProfessionalDto().email())))
-                                .andExpect(jsonPath("$.specialty", is(updatedProfessionalDto().specialty())));
+        // then - verify result
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(updatedProfessionalDto().name())))
+                .andExpect(jsonPath("$.email", is(updatedProfessionalDto().email())))
+                .andExpect(jsonPath("$.specialty", is(updatedProfessionalDto().specialty())));
 
-        }
+    }
 
-        @Test
-        void givenProfessionalDto_whenUpdate_thenThrowsRetunrNotFoundException()
-                        throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(professionalService.updateProfessional(any(ProfessionalDto.class), any(Long.class)))
-                                .willThrow(ResourceNotFoundException.class);
-                // when - action or behaviour that we are goint to test
-                var result = mockMvc.perform(
-                                put("/api/v1/professional/update/{id}", 1L)
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .content(objectMapper.writeValueAsString(updatedProfessionalDto())));
+    @Test
+    void givenProfessionalDto_whenUpdate_thenThrowsRetunrNotFoundException()
+            throws JsonProcessingException, Exception {
+        // given - precodition or setup
+        given(professionalService.updateProfessional(any(ProfessionalDto.class), any(Long.class)))
+                .willThrow(ResourceNotFoundException.class);
+        // when - action or behaviour that we are goint to test
+        var result = mockMvc.perform(
+                put("/api/v1/professional/update/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedProfessionalDto())));
 
-                // then - verify result
-                result.andExpect(status().isNotFound());
-        }
+        // then - verify result
+        result.andExpect(status().isNotFound());
+    }
 
-        @Test
-        void givenProfessionalDto_whenUpdate_thenThrowsAppointmentException()
-                        throws JsonProcessingException, Exception {
-                // given - precodition or setup
-                given(professionalService.updateProfessional(any(ProfessionalDto.class), any(Long.class)))
-                                .willThrow(AppointmentException.class);
-                // when - action or behaviour that we are goint to test
-                var result = mockMvc.perform(
-                                put("/api/v1/professional/update/{id}", 1L)
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .content(objectMapper.writeValueAsString(updatedProfessionalDto())));
+    @Test
+    void givenProfessionalDto_whenUpdate_thenThrowsAppointmentException()
+            throws JsonProcessingException, Exception {
+        // given - precodition or setup
+        given(professionalService.updateProfessional(any(ProfessionalDto.class), any(Long.class)))
+                .willThrow(AppointmentException.class);
+        // when - action or behaviour that we are goint to test
+        var result = mockMvc.perform(
+                put("/api/v1/professional/update/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedProfessionalDto())));
 
-                // then - verify result
-                result.andExpect(status().isBadRequest());
-        }
+        // then - verify result
+        result.andExpect(status().isBadRequest());
+    }
 
-        @Test
-        void givenProfessionalId_whenDeleteProfessional_thenVerify() throws Exception {
-                // given - precodition or setup
-                willDoNothing().given(professionalService).deleteProfessional(1L);
+    @Test
+    void givenProfessionalId_whenDeleteProfessional_thenVerify() throws Exception {
+        // given - precodition or setup
+        willDoNothing().given(professionalService).deleteProfessional(1L);
 
-                // when - action or the behaviour that we are goin test
-                var result = mockMvc.perform(delete("/api/v1/professional/delete/{id}", 1L));
+        // when - action or the behaviour that we are goin test
+        var result = mockMvc.perform(delete("/api/v1/professional/delete/{id}", 1L));
 
-                // then - verify
-                result.andExpect(status().isNoContent());
-        }
+        // then - verify
+        result.andExpect(status().isNoContent());
+    }
 
-        @Test
-        void givenProfessionalId_whenDeleteProfessional_thenThrowsResourceNotFoundException() throws Exception {
-                // given - precodition or setup
-                willThrow(ResourceNotFoundException.class)
-                                .given(professionalService)
-                                .deleteProfessional(1L);
-                // when - action or the behaviour that we are goin test
-                var result = mockMvc.perform(delete("/api/v1/professional/delete/{id}", 1L));
+    @Test
+    void givenProfessionalId_whenDeleteProfessional_thenThrowsResourceNotFoundException() throws Exception {
+        // given - precodition or setup
+        willThrow(ResourceNotFoundException.class)
+                .given(professionalService)
+                .deleteProfessional(1L);
+        // when - action or the behaviour that we are goin test
+        var result = mockMvc.perform(delete("/api/v1/professional/delete/{id}", 1L));
 
-                // then - verify
-                result.andExpect(status().isNotFound());
-        }
+        // then - verify
+        result.andExpect(status().isNotFound());
+    }
 }

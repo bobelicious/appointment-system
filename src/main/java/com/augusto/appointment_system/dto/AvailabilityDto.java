@@ -5,8 +5,8 @@ import java.time.LocalTime;
 import java.util.List;
 
 public record AvailabilityDto(
-        String professionalEmail, 
-        List<DayOfWeek> availableDays, 
+        String professionalEmail,
+        List<DayOfWeek> availableDays,
         LocalTime startTime,
         LocalTime endTime,
         Integer appointMentDurations) {
