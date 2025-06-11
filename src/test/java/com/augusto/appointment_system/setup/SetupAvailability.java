@@ -2,6 +2,10 @@ package com.augusto.appointment_system.setup;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.augusto.appointment_system.dto.AvailabilityDto;
 import com.augusto.appointment_system.model.Availability;
@@ -20,6 +24,16 @@ public class SetupAvailability {
                 new File(AVAILABILITY_JSON_PATH),
                 Availability.class);
     }
+
+    public static Availability updatedAvailability() throws IOException {
+        return Availability.builder()
+                .availableDays(new ArrayList<>(List.of(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)))
+                .startTime(LocalTime.of(18, 00))
+                .endTime(LocalTime.of(23, 59))
+                .appointmentDurationMinutes(45)
+                .build();
+    }
+
     public static AvailabilityDto availabilityDto() throws IOException {
         objectMapper.registerModule(new JavaTimeModule());
         return objectMapper.readValue(
