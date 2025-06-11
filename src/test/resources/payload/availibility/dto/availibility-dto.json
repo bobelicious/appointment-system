@@ -1,0 +1,7 @@
+{
+	"professionalEmail":"a@gmail.com",
+	"availableDays":[0,1,2,3,4],
+	"startTime": "08:00:00",
+	"endTime": "17:00:00",
+	"appointmentDurationMinutes": 45
+}

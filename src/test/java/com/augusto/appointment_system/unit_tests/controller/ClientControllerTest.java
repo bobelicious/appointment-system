@@ -22,9 +22,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.augusto.appointment_system.controller.AvailabilityController;
 import com.augusto.appointment_system.dto.ClientDto;
 import com.augusto.appointment_system.exception.AppointmentException;
 import com.augusto.appointment_system.exception.ResourceNotFoundException;
+import com.augusto.appointment_system.service.AppointmentService;
 import com.augusto.appointment_system.service.ClientService;
 import com.augusto.appointment_system.service.ProfessionalService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,6 +41,10 @@ public class ClientControllerTest {
         private ClientService clientService;
         @MockitoBean
         private ProfessionalService professionalService;
+        @MockitoBean
+        private AppointmentService appointmentService;
+        @MockitoBean
+        private AvailabilityController availabilityController;
 
         ObjectMapper objectMapper = new ObjectMapper();
 
