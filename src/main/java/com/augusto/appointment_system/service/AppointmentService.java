@@ -16,6 +16,7 @@ import com.augusto.appointment_system.config.MailConfig;
 import com.augusto.appointment_system.dto.AppointmentDto;
 import com.augusto.appointment_system.exception.AppointmentException;
 import com.augusto.appointment_system.exception.ResourceNotFoundException;
+import com.augusto.appointment_system.model.Appointment;
 import com.augusto.appointment_system.model.AppointmentStatus;
 import com.augusto.appointment_system.model.Availability;
 import com.augusto.appointment_system.model.Client;
@@ -53,13 +54,8 @@ public class AppointmentService {
         var professional = getValidatedProfessional(appointmentDto.professionalEmail());
         var availability = checkAvailability(professional.getEmail(), appointmentDto.startTime());
         var client = getValidatedClient(appointmentDto.clientEmail());
-        
-        
-        var endTime = appointmentDto.startTime().plusMinutes(availability.getAppointmentDurationMinutes());
-        var appointment = mapToAppointment(appointmentDto, client, professional);
-        appointment.setEndTime(endTime);
-        appointment.setStatus(AppointmentStatus.SCHEDULED);
-        appointment = appointmentRepository.save(appointment);
+
+        var appointment = createScheduledAppointment(appointmentDto, client, professional, availability);
 
         sendEmail(appointmentDto.clientEmail(),
                 "Confirmacao de agendamento", generateConfirmLink(appointment.getId()));
@@ -74,6 +70,15 @@ public class AppointmentService {
         var message = String.format("Agendamento confirmado com sucesso, id: %s", appointment.getId());
         sendEmail(appointment.getProfessional().getEmail(), "Confirmacao de agendamento", message);
         return "Status confirmed successful";
+    }
+
+    private Appointment createScheduledAppointment(AppointmentDto dto, Client client, Professional professional,
+            Availability availability) {
+        var endTime = dto.startTime().plusMinutes(availability.getAppointmentDurationMinutes());
+        var appointment = mapToAppointment(dto, client, professional);
+        appointment.setEndTime(endTime);
+        appointment.setStatus(AppointmentStatus.SCHEDULED);
+        return appointmentRepository.save(appointment);
     }
 
     private Client getValidatedClient(String clientEmail) {
@@ -109,7 +114,7 @@ public class AppointmentService {
     private Availability checkAvailability(String professionalEmail, LocalDateTime starTime) {
         var availability = availabilityRepository.findAvailabilityByProfessionalEmail(professionalEmail).orElseThrow(
                 () -> new ResourceNotFoundException("Availability", "professionalEmail", professionalEmail));
-                
+
         var contains = availability.getAvailableDays().stream().anyMatch((day) -> starTime.getDayOfWeek().equals(day));
         if (!contains) {
             throw new AppointmentException(HttpStatus.BAD_REQUEST, "Unavailable day");
