@@ -5,7 +5,7 @@ spring:
     name: appointment-system
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
   mail:
     host: smtp.gmail.com
     port: 587
