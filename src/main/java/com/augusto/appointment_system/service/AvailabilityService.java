@@ -33,7 +33,7 @@ public class AvailabilityService {
                 () -> new ResourceNotFoundException("Availability", "professional email", professionalEmail));
         availability = new Availability(
                 availability.getId(),
-                availabilityDto.professionalEmail(),
+                professionalEmail,
                 availabilityDto.availableDays(),
                 availabilityDto.startTime(),
                 availabilityDto.endTime(),

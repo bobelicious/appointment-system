@@ -27,6 +27,7 @@ public class SetupAvailability {
 
     public static Availability updatedAvailability() throws IOException {
         return Availability.builder()
+                .professionalEmail("a@gmail.com")
                 .availableDays(new ArrayList<>(List.of(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)))
                 .startTime(LocalTime.of(18, 00))
                 .endTime(LocalTime.of(23, 59))
