@@ -48,10 +48,10 @@ public class AppointmentControllerTest extends AbstractIntegrationTest {
 
     @BeforeEach
     void setup() {
+        appointmentRepository.deleteAll();
         clientRepository.deleteAll();
         professionalRepository.deleteAll();
         availabilityRepository.deleteAll();
-        appointmentRepository.deleteAll();
         objectMapper.registerModule(new JavaTimeModule());
     }
 
