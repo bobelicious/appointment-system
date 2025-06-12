@@ -158,11 +158,6 @@ public class AppointmentServiceTest {
                 "a@gmail.com",
                 LocalDateTime.of(2025, 06, 12, 05, 00),
                 LocalDateTime.of(2025, 06, 12, 10, 45));
-        given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
-                .willReturn(Optional.of(professional()));
-        given(availabilityRepository
-                .findAvailabilityByProfessionalEmail(appointment().getProfessional().getEmail()))
-                .willReturn(Optional.of(availability()));
 
         // when - action or the behavior that we are going to test
         assertThrows(AppointmentException.class, () -> {

@@ -25,8 +25,6 @@ import com.augusto.appointment_system.repository.AvailabilityRepository;
 import com.augusto.appointment_system.repository.ClientRepository;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
 
-import jakarta.transaction.Transactional;
-
 @Service
 public class AppointmentService {
 
@@ -48,7 +46,6 @@ public class AppointmentService {
     @Autowired
     private Environment environment;
 
-    @Transactional
     public AppointmentDto createAppointment(AppointmentDto appointmentDto) throws UnknownHostException {
 
         validateAppointmentDateTime(appointmentDto.startTime());
@@ -69,7 +66,6 @@ public class AppointmentService {
         return mapToappointmentDto(appointment);
     }
 
-    @Transactional
     public String confirmAppointment(Long id) {
         var appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment confirmation", "id", id));

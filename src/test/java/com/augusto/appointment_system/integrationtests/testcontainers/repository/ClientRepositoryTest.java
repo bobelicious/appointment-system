@@ -28,6 +28,7 @@ public class ClientRepositoryTest extends AbstractIntegrationTest {
         clientRepository.deleteAll();
     }
 
+
     @Test
     public void givenClient_whenSave_thenReturnSavedEmoployee() throws IOException {
         // given - precodition or setup

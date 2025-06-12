@@ -28,6 +28,8 @@ public class ProfessionalRepositoryTest extends AbstractIntegrationTest {
         professionalRepository.deleteAll();
     }
 
+
+
     @Test
     public void givenProfessional_whenSave_thenReturnSavedProfesssional() throws IOException {
         // given - precodition or setup
