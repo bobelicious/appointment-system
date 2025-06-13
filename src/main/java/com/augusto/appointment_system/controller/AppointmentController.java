@@ -1,6 +1,7 @@
 package com.augusto.appointment_system.controller;
 
 import java.net.UnknownHostException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,11 @@ public class AppointmentController {
     @GetMapping("/confirm/{id}")
     public ResponseEntity<String> getMethodName(@PathVariable Long id) {
         return new ResponseEntity<>(appointmentService.confirmAppointment(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/scheduled-appointments/client/{email}")
+    public ResponseEntity<List<AppointmentDto>> getMethodName(@PathVariable String email) {
+        return new ResponseEntity<>(appointmentService.ListClientScheduledAppointments(email), HttpStatus.OK);
     }
 
 }

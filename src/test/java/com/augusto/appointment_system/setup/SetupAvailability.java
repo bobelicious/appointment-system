@@ -42,4 +42,12 @@ public class SetupAvailability {
                 AvailabilityDto.class);
     }
 
+    public static AvailabilityDto updatedAvailabilityDto() throws IOException {
+        return new AvailabilityDto(
+                "a@gmail.com",
+                new ArrayList<DayOfWeek>(List.of(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)),
+                LocalTime.of(18, 00),
+                LocalTime.of(23, 59),
+                45);
+    }
 }

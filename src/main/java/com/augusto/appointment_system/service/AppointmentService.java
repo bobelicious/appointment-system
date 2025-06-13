@@ -6,6 +6,7 @@ import static com.augusto.appointment_system.mapper.AppointmentMapper.mapToappoi
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -16,6 +17,7 @@ import com.augusto.appointment_system.config.MailConfig;
 import com.augusto.appointment_system.dto.AppointmentDto;
 import com.augusto.appointment_system.exception.AppointmentException;
 import com.augusto.appointment_system.exception.ResourceNotFoundException;
+import com.augusto.appointment_system.mapper.AppointmentMapper;
 import com.augusto.appointment_system.model.Appointment;
 import com.augusto.appointment_system.model.AppointmentStatus;
 import com.augusto.appointment_system.model.Availability;
@@ -70,6 +72,12 @@ public class AppointmentService {
         var message = String.format("Agendamento confirmado com sucesso, id: %s", appointment.getId());
         sendEmail(appointment.getProfessional().getEmail(), "Confirmacao de agendamento", message);
         return "Status confirmed successful";
+    }
+
+    public List<AppointmentDto> ListClientScheduledAppointments(String clientEmail) {
+        getValidatedClient(clientEmail);
+        var scheduledAppointments = appointmentRepository.findAllByClientEmail(clientEmail);
+        return scheduledAppointments.stream().map(AppointmentMapper::mapToappointmentDto).toList();
     }
 
     private Appointment createScheduledAppointment(AppointmentDto dto, Client client, Professional professional,

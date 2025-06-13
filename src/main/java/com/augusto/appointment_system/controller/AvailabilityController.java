@@ -24,9 +24,9 @@ public class AvailabilityController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<AvailabilityDto> updateAvaiilibility(@RequestParam String professionaEmail,
+    public ResponseEntity<AvailabilityDto> updateAvaiilibility(@RequestParam String professionalEmail,
             @RequestBody AvailabilityDto availabilityDto) {
-        return new ResponseEntity<>(availabilityService.updateAvailabilityDto(professionaEmail, availabilityDto),
+        return new ResponseEntity<>(availabilityService.updateAvailabilityDto(professionalEmail, availabilityDto),
                 HttpStatus.OK);
     }
 }
