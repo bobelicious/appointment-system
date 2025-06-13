@@ -25,7 +25,7 @@ public class SetupAvailability {
                 Availability.class);
     }
 
-    public static Availability updatedAvailability() throws IOException {
+    public static Availability updatedAvailability() {
         return Availability.builder()
                 .professionalEmail("a@gmail.com")
                 .availableDays(new ArrayList<>(List.of(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)))
@@ -42,7 +42,7 @@ public class SetupAvailability {
                 AvailabilityDto.class);
     }
 
-    public static AvailabilityDto updatedAvailabilityDto() throws IOException {
+    public static AvailabilityDto updatedAvailabilityDto() {
         return new AvailabilityDto(
                 "a@gmail.com",
                 new ArrayList<DayOfWeek>(List.of(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)),

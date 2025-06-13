@@ -33,7 +33,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
-public class ProfessionalsServiceTest {
+class ProfessionalsServiceTest {
     @Mock
     private ProfessionalRepository professionalRepository;
 
@@ -204,7 +204,7 @@ public class ProfessionalsServiceTest {
     }
 
     @Test
-    public void givenId_whenDeleteProfessional_thenVerify() {
+    void givenId_whenDeleteProfessional_thenVerify() {
         // given - precodition or setup
         given(professionalRepository.findById(1L)).willReturn(Optional.of(professional));
         willDoNothing().given(professionalRepository).delete(professional);
@@ -215,7 +215,7 @@ public class ProfessionalsServiceTest {
     }
 
     @Test
-    public void givenId_whenDeleteProfessional_thenThrowsResourceNotFoundException() {
+    void givenId_whenDeleteProfessional_thenThrowsResourceNotFoundException() {
         // given - precodition or setup
         given(professionalRepository.findById(1L)).willReturn(Optional.empty());
         // when - action or the behavior that we are goint to test

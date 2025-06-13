@@ -22,12 +22,11 @@ import com.augusto.appointment_system.service.AppointmentService;
 import com.augusto.appointment_system.service.AvailabilityService;
 import com.augusto.appointment_system.service.ClientService;
 import com.augusto.appointment_system.service.ProfessionalService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @WebMvcTest
-public class AppointmentControllerTest {
+class AppointmentControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockitoBean
@@ -38,7 +37,7 @@ public class AppointmentControllerTest {
     private AppointmentService appointmentService;
     @MockitoBean
     private AvailabilityService availabilityService;
-    
+
     ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
@@ -47,10 +46,10 @@ public class AppointmentControllerTest {
     }
 
     @Test
-    void givenAppointmentDto_whenSaveAppointment_thenReturnAppointmentDto() throws JsonProcessingException, Exception {
+    void givenAppointmentDto_whenSaveAppointment_thenReturnAppointmentDto() throws Exception {
         // given - precodition or setup
         given(appointmentService.createAppointment(any(AppointmentDto.class)))
-                .willAnswer((invocation) -> invocation.getArgument(0));
+                .willAnswer(invocation -> invocation.getArgument(0));
 
         // when - action or behaviour that we are goint test
         var result = mockMvc.perform(post("/api/v1/appointment/new")
@@ -67,7 +66,7 @@ public class AppointmentControllerTest {
 
     @Test
     void givenAppointmentId_whenConfirmAppointment_thenReturnMessageConfirmation()
-            throws JsonProcessingException, Exception {
+            throws Exception {
         // given - precodition or setup
         given(appointmentService.confirmAppointment(1L)).willReturn("Status confirmed successful");
 

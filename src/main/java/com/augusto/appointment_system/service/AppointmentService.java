@@ -74,9 +74,15 @@ public class AppointmentService {
         return "Status confirmed successful";
     }
 
-    public List<AppointmentDto> ListClientScheduledAppointments(String clientEmail) {
+    public List<AppointmentDto> listClientScheduledAppointments(String clientEmail) {
         getValidatedClient(clientEmail);
         var scheduledAppointments = appointmentRepository.findAllByClientEmail(clientEmail);
+        return scheduledAppointments.stream().map(AppointmentMapper::mapToappointmentDto).toList();
+    }
+
+    public List<AppointmentDto> listProfessionalScheduledAppointments(String professionalEmail) {
+        getValidatedProfessional(professionalEmail);
+        var scheduledAppointments = appointmentRepository.findAllByClientEmail(professionalEmail);
         return scheduledAppointments.stream().map(AppointmentMapper::mapToappointmentDto).toList();
     }
 

@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @WebMvcTest
-public class AvailabilityControllerTest {
+class AvailabilityControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockitoBean

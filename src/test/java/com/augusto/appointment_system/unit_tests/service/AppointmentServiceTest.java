@@ -35,7 +35,7 @@ import com.augusto.appointment_system.repository.ProfessionalRepository;
 import com.augusto.appointment_system.service.AppointmentService;
 
 @ExtendWith(MockitoExtension.class)
-public class AppointmentServiceTest {
+class AppointmentServiceTest {
     @Mock
     private AppointmentRepository appointmentRepository;
     @Mock
@@ -53,7 +53,7 @@ public class AppointmentServiceTest {
     private AppointmentService appointmentService;
 
     @Test
-    public void givenAppointmentDto_whenSaveAppointment_thenReturnAppointmentDto() throws IOException {
+    void givenAppointmentDto_whenSaveAppointment_thenReturnAppointmentDto() throws IOException {
         // given - precodition or setup
         given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
                 .willReturn(Optional.of(professional()));
@@ -72,7 +72,7 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void givenAppointmentDto_whenSaveAppointment_thenThrowAvailabilityNotFound() throws IOException {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowAvailabilityNotFound() throws IOException {
         // given - precodition or setup
         given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
                 .willReturn(Optional.of(professional()));
@@ -90,7 +90,7 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void givenAppointmentDto_whenSaveAppointment_thenThrowUnvaliableDay() throws IOException {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowUnvaliableDay() throws IOException {
         // given - precodition or setup
         var wrongAppointmentDto = new AppointmentDto(
                 "pepiye3978@claspira.com",
@@ -114,7 +114,7 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void givenAppointmentDto_whenSaveAppointment_thenThrowUnvaliableTime() throws IOException {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowUnvaliableTime() throws IOException {
         // given - precodition or setup
         given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
                 .willReturn(Optional.of(professional()));
@@ -133,7 +133,7 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void givenAppointmentDto_whenSaveAppointment_thenThrowsInvalidDate() throws IOException {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowsInvalidDate() {
         // given - precodition or setup\
         var wrongAppointmentDto = new AppointmentDto(
                 "a@email.com",
@@ -151,7 +151,7 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void givenAppointmentDto_whenSaveAppointment_thenThrowsStartTimeIsBefore() throws IOException {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowsStartTimeIsBefore() {
         // given - precodition or setup\
         var wrongAppointmentDto = new AppointmentDto(
                 "a@email.com",
@@ -169,7 +169,7 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void givenAppointmentDto_whenSaveAppointment_thenThrowsStartTimeIsAfter() throws IOException {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowsStartTimeIsAfter() {
         // given - precodition or setup\
         var wrongAppointmentDto = new AppointmentDto(
                 "a@email.com",
@@ -187,7 +187,7 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void givenAppointmentDto_whenSaveAppointment_thenThrowsClientNotFound() throws IOException {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowsClientNotFound() throws IOException {
         // given - precodition or setup
         given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
                 .willReturn(Optional.of(professional()));
@@ -207,7 +207,7 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void givenAppointmentDto_whenSaveAppointment_thenThrowsProfessionalNotFound() throws IOException {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowsProfessionalNotFound() throws IOException {
         // given - precodition or setup
         given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
                 .willThrow(ResourceNotFoundException.class);
@@ -222,7 +222,7 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void givenAppointmentId_whenChangeAppointmentToConfirmed_thenReturnMessage() throws IOException {
+    void givenAppointmentId_whenChangeAppointmentToConfirmed_thenReturnMessage() throws IOException {
         // given - precodition or setup
         given(appointmentRepository.findById(1L)).willReturn(Optional.of(appointment()));
         given(appointmentRepository.save(any(Appointment.class))).willReturn(appointment());

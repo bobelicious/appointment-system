@@ -25,12 +25,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.augusto.appointment_system.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.augusto.appointment_system.repository.AppointmentRepository;
 import com.augusto.appointment_system.repository.ClientRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
-public class ClientControllerTest extends AbstractIntegrationTest {
+class ClientControllerTest extends AbstractIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,7 +46,7 @@ public class ClientControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void givenClientDto_whenSaveClient_thenReturnClientDto() throws JsonProcessingException, Exception {
+    void givenClientDto_whenSaveClient_thenReturnClientDto() throws Exception {
         // given - precodition or setup
 
         // when - action or behaviour that we are goint test
@@ -64,7 +63,7 @@ public class ClientControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void givenClientId_whenFindById_thenReturnClientDto() throws JsonProcessingException, Exception {
+    void givenClientId_whenFindById_thenReturnClientDto() throws Exception {
         // given - precodition or setup
         var client = clientRepository.save(client());
 
@@ -91,7 +90,7 @@ public class ClientControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void givenClientDto_whenUpdate_thenReturnClientDto() throws JsonProcessingException, Exception {
+    void givenClientDto_whenUpdate_thenReturnClientDto() throws Exception {
         // given - precodition or setup
         var client = clientRepository.save(client());
 

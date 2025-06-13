@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.augusto.appointment_system.integrationtests.testcontainers.AbstractIntegrationTest;
+import com.augusto.appointment_system.repository.AppointmentRepository;
 import com.augusto.appointment_system.repository.AvailabilityRepository;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +28,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
-public class AvailabilityControllerTest extends AbstractIntegrationTest {
+class AvailabilityControllerTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -36,9 +37,13 @@ public class AvailabilityControllerTest extends AbstractIntegrationTest {
     private AvailabilityRepository availabilityRepository;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
 
     @BeforeEach
     void setup() {
+        appointmentRepository.deleteAll();
         professionalRepository.deleteAll();
         availabilityRepository.deleteAll();
         objectMapper.registerModule(new JavaTimeModule());

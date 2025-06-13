@@ -15,12 +15,12 @@ import com.augusto.appointment_system.repository.ClientRepository;
 
 
 @DataJpaTest
-public class ClientRepositoryTest {
+class ClientRepositoryTest {
     @Autowired
     ClientRepository clientRepository;
 
     @Test
-    public void givenClient_whenSave_thenReturnSavedEmoployee() throws IOException {
+    void givenClient_whenSave_thenReturnSavedEmoployee() throws IOException {
         // given - precodition or setup
         var savedClient = clientRepository.save(client());
 
@@ -33,7 +33,7 @@ public class ClientRepositoryTest {
     }
 
     @Test
-    public void givenEmail_whenVerifyIfExist_thenReturnBool() throws IOException {
+    void givenEmail_whenVerifyIfExist_thenReturnBool() throws IOException {
         // given - precodition or setup
         var clientEmailExist = clientRepository.existsByEmail(client().getEmail());
         // then - verify result
@@ -41,7 +41,7 @@ public class ClientRepositoryTest {
     }
 
     @Test
-    public void givenEmail_whenFindByEmail_thenReturnClientEntity() throws IOException {
+    void givenEmail_whenFindByEmail_thenReturnClientEntity() throws IOException {
         // given - precodition or setup
         clientRepository.save(client());
         // when - action or the behavior that we are going to test
@@ -53,7 +53,7 @@ public class ClientRepositoryTest {
     }
 
     @Test
-    public void givenListClient_whenSelectAll_thenReturnListOfClients() throws Exception {
+    void givenListClient_whenSelectAll_thenReturnListOfClients() throws Exception {
         // given - precodition or setup
         clientRepository.saveAll(clientList());
         // when - action or the behavior that we are goin to test
@@ -64,7 +64,7 @@ public class ClientRepositoryTest {
     }
 
     @Test
-    public void givenId_whenFindById_thenRetunrnClient() throws IOException {
+    void givenId_whenFindById_thenRetunrnClient() throws IOException {
         // given - precodition or setup
         var savedClient = clientRepository.save(client());
         // when - action or the behavior that we are goint to test
@@ -75,7 +75,7 @@ public class ClientRepositoryTest {
     }
 
     @Test
-    public void givenClient_whenUpdateClient_thenReturnClient() throws IOException {
+    void givenClient_whenUpdateClient_thenReturnClient() throws IOException {
         // given - precodition or setup
         var client = clientRepository.save(client());
         // when - action or the behavior that we are goint to test
@@ -92,7 +92,7 @@ public class ClientRepositoryTest {
     }
 
     @Test
-    public void givenId_whenDeleteClient_thenVerifyResult() throws IOException {
+    void givenId_whenDeleteClient_thenVerifyResult() throws IOException {
         // given - precodition or setup
         var client =  clientRepository.save(client());
         // when - action or the behavior that we are goint to test
@@ -102,7 +102,7 @@ public class ClientRepositoryTest {
     }
 
     // @Test
-    // public void given_when_then() {
+    // void given_when_then() {
     // // given - precodition or setup
 
     // // when - action or the behavior that we are goint to test

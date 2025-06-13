@@ -32,7 +32,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
-public class ClientServiceTest {
+class ClientServiceTest {
     @Mock
     private ClientRepository clientRepository;
 
@@ -98,7 +98,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void givenClientDto_whenSave_thenThrowsException() {
+    void givenClientDto_whenSave_thenThrowsException() {
         // given - precodition or setup
         given(clientRepository.existsByEmail(clientDto.getEmail())).willReturn(true);
         // when - action or the behavior that we are goint to test
@@ -110,7 +110,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void givenId_whenFindById_thenReturnClientDto() {
+    void givenId_whenFindById_thenReturnClientDto() {
         // given - precodition or setup
         given(clientRepository.findById(1L)).willReturn(Optional.of(client));
         // when - action or the behavior that we are goint to test
@@ -122,7 +122,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void givenListOfClients_whenFindAll_thenReturnListOfClietsDto() {
+    void givenListOfClients_whenFindAll_thenReturnListOfClietsDto() {
         // given - precodition or setup
         given(clientRepository.findAll()).willReturn(clientList);
         // when - action or the behavior that we are goint to test
@@ -132,7 +132,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void givenClientDto_whenUpdateClient_thenReturnUpdatedClientDto() {
+    void givenClientDto_whenUpdateClient_thenReturnUpdatedClientDto() {
         // given - precodition or setup
         given(clientRepository.existsByEmail(toUpdateClient.getEmail())).willReturn(false);
         given(clientRepository.findById(client.getId())).willReturn(Optional.of(client));
@@ -146,7 +146,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void givenClientDto_whenUpdateClient_thenThrowsClientException() {
+    void givenClientDto_whenUpdateClient_thenThrowsClientException() {
         // given - precodition or setup
         given(clientRepository.existsByEmail(updatedClientDto.getEmail())).willReturn(true);
         // when - action or the behavior that we are goint to test
@@ -158,7 +158,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void givenClientDto_whenUpdateClient_thenThrowsResourceNotFoundException() {
+    void givenClientDto_whenUpdateClient_thenThrowsResourceNotFoundException() {
         // given - precodition or setup
         given(clientRepository.existsByEmail(updatedClientDto.getEmail())).willReturn(false);
         given(clientRepository.findById(1L)).willReturn(Optional.empty());
@@ -171,7 +171,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void givenId_whenDeleteClient_thenVerify() {
+    void givenId_whenDeleteClient_thenVerify() {
         // given - precodition or setup
         given(clientRepository.findById(1L)).willReturn(Optional.of(client));
         willDoNothing().given(clientRepository).delete(client);
@@ -182,7 +182,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void givenId_whenDeleteClient_thenThrowsResourceNotFoundException() {
+    void givenId_whenDeleteClient_thenThrowsResourceNotFoundException() {
         // given - precodition or setup
         given(clientRepository.findById(1L)).willReturn(Optional.empty());
         // when - action or the behavior that we are goint to test
@@ -193,12 +193,4 @@ public class ClientServiceTest {
         verify(clientRepository, never()).delete(any(Client.class));
     }
 
-    // @Test
-    // public void given_when_then() {
-    // // given - precodition or setup
-
-    // // when - action or the behavior that we are goint to test
-
-    // // then - verify the result
-    // }
 }

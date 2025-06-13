@@ -26,12 +26,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.augusto.appointment_system.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.augusto.appointment_system.repository.AppointmentRepository;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
-public class ProfessionalControllerTest extends AbstractIntegrationTest {
+class ProfessionalControllerTest extends AbstractIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,7 +49,7 @@ public class ProfessionalControllerTest extends AbstractIntegrationTest {
 
     @Test
     void givenProfessionalDto_whenSaveProfessional_thenReturnProfessionalDto()
-            throws JsonProcessingException, Exception {
+            throws Exception {
         // given - precodition or setup
 
         // when - action or behaviour that we are goint test
@@ -70,7 +69,7 @@ public class ProfessionalControllerTest extends AbstractIntegrationTest {
 
     @Test
     void givenProfessionalDto_whenSaveProfessional_thenThrowsAppointmentException()
-            throws JsonProcessingException, Exception {
+            throws Exception {
         // given - precodition or setup
         professionalRepository.save(professional());
 
@@ -84,7 +83,7 @@ public class ProfessionalControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void givenProfessionalId_whenFindById_thenReturnProfessionalDto() throws JsonProcessingException, Exception {
+    void givenProfessionalId_whenFindById_thenReturnProfessionalDto() throws Exception {
         // given - precodition or setup
         var professional = professionalRepository.save(professional());
 
@@ -111,7 +110,7 @@ public class ProfessionalControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void givenProfessionalDto_whenUpdate_thenReturnProfessionalDto() throws JsonProcessingException, Exception {
+    void givenProfessionalDto_whenUpdate_thenReturnProfessionalDto() throws Exception {
         // given - precodition or setup
         var professional = professionalRepository.save(professional());
 
@@ -130,7 +129,7 @@ public class ProfessionalControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void givenProfessionalDto_whenUpdate_thenThrowsRetunrNotFoundException() throws JsonProcessingException, Exception {
+    void givenProfessionalDto_whenUpdate_thenThrowsRetunrNotFoundException() throws Exception {
         // when - action or behaviour that we are goint to test
         var result = mockMvc.perform(
                 put("/api/v1/professional/update/{id}", 1L)
@@ -142,7 +141,7 @@ public class ProfessionalControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void givenProfessionalDto_whenUpdate_thenThrowsAppointmentException() throws JsonProcessingException, Exception {
+    void givenProfessionalDto_whenUpdate_thenThrowsAppointmentException() throws Exception {
         // given - precodition or setup
         var updatedProfessional = professionalRepository.save(updatedProfessional());
         // when - action or behaviour that we are goint to test

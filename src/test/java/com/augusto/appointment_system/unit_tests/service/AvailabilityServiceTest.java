@@ -23,7 +23,7 @@ import com.augusto.appointment_system.repository.ProfessionalRepository;
 import com.augusto.appointment_system.service.AvailabilityService;
 
 @ExtendWith(MockitoExtension.class)
-public class AvailabilityServiceTest {
+class AvailabilityServiceTest {
     @Mock
     private ProfessionalRepository professionalRepository;
     @Mock

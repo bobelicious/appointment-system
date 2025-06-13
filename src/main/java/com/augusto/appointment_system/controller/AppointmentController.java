@@ -30,13 +30,18 @@ public class AppointmentController {
     }
 
     @GetMapping("/confirm/{id}")
-    public ResponseEntity<String> getMethodName(@PathVariable Long id) {
+    public ResponseEntity<String> confirmAppointment(@PathVariable Long id) {
         return new ResponseEntity<>(appointmentService.confirmAppointment(id), HttpStatus.OK);
     }
 
     @GetMapping("/scheduled-appointments/client/{email}")
-    public ResponseEntity<List<AppointmentDto>> getMethodName(@PathVariable String email) {
-        return new ResponseEntity<>(appointmentService.ListClientScheduledAppointments(email), HttpStatus.OK);
+    public ResponseEntity<List<AppointmentDto>> listClientScheduledAppointments(@PathVariable String email) {
+        return new ResponseEntity<>(appointmentService.listClientScheduledAppointments(email), HttpStatus.OK);
+    }
+
+    @GetMapping("/scheduled-appointments/professional/{email}")
+    public ResponseEntity<List<AppointmentDto>> listProfessionalScheduledAppointments(@PathVariable String email) {
+        return new ResponseEntity<>(appointmentService.listProfessionalScheduledAppointments(email), HttpStatus.OK);
     }
 
 }

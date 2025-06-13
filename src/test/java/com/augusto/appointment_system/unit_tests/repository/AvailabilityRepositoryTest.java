@@ -15,7 +15,7 @@ import com.augusto.appointment_system.repository.AvailabilityRepository;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
 
 @DataJpaTest
-public class AvailabilityRepositoryTest {
+class AvailabilityRepositoryTest {
     @Autowired
     AvailabilityRepository availabilityRepository;
     @Autowired

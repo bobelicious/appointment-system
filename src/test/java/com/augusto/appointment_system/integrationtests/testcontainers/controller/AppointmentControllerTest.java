@@ -25,13 +25,12 @@ import com.augusto.appointment_system.repository.AppointmentRepository;
 import com.augusto.appointment_system.repository.AvailabilityRepository;
 import com.augusto.appointment_system.repository.ClientRepository;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
-public class AppointmentControllerTest extends AbstractIntegrationTest {
+class AppointmentControllerTest extends AbstractIntegrationTest {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -57,7 +56,7 @@ public class AppointmentControllerTest extends AbstractIntegrationTest {
 
     @Test
     void givenAppointmentDto_whenSaveAppointment_thenReturnAppointmentDto()
-            throws JsonProcessingException, Exception {
+            throws  Exception {
         // given - precodition or setup
         clientRepository.save(client());
         professionalRepository.save(professional());
@@ -78,7 +77,7 @@ public class AppointmentControllerTest extends AbstractIntegrationTest {
 
     @Test
     void givenAppointmentId_whenConfirmAppointment_thenReturnMessageConfirmation()
-            throws JsonProcessingException, Exception {
+            throws  Exception {
         // given - precodition or setup
         var appointment = appointment();
         appointment.setProfessional(professionalRepository.save(professional()));

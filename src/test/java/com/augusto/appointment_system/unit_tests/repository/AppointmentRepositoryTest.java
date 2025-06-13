@@ -20,7 +20,7 @@ import com.augusto.appointment_system.repository.ClientRepository;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
 
 @DataJpaTest
-public class AppointmentRepositoryTest {
+class AppointmentRepositoryTest {
     @Autowired
     AppointmentRepository appointmentRepository;
     @Autowired
@@ -30,6 +30,7 @@ public class AppointmentRepositoryTest {
     @Autowired
     AvailabilityRepository availabilityRepository;
     Appointment appointment;
+
     @BeforeEach
     void setup() throws IOException {
         appointment = appointment();
@@ -39,7 +40,7 @@ public class AppointmentRepositoryTest {
     }
 
     @Test
-    public void givenAppointment_whenSave_thenReturnSavedAppointment() throws IOException {
+    void givenAppointment_whenSave_thenReturnSavedAppointment() {
         // when
         appointmentRepository.save(appointment);
 
@@ -49,7 +50,7 @@ public class AppointmentRepositoryTest {
     }
 
     @Test
-    public void givenStartTimeAndProfessionalEmail_whenExistsByStartTimeAndProfessionalEmail_thenReturnBool()
+    void givenStartTimeAndProfessionalEmail_whenExistsByStartTimeAndProfessionalEmail_thenReturnBool()
             throws IOException {
         // given
         appointmentRepository.save(appointment);

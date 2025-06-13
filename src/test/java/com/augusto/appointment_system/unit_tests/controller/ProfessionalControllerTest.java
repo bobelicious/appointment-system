@@ -29,11 +29,10 @@ import com.augusto.appointment_system.exception.ResourceNotFoundException;
 import com.augusto.appointment_system.service.AppointmentService;
 import com.augusto.appointment_system.service.ClientService;
 import com.augusto.appointment_system.service.ProfessionalService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest
-public class ProfessionalControllerTest {
+class ProfessionalControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -50,10 +49,10 @@ public class ProfessionalControllerTest {
 
     @Test
     void givenProfessionalDto_whenSaveProfessional_thenReturnProfessionalDto()
-            throws JsonProcessingException, Exception {
+            throws Exception {
         // given - precodition or setup
         given(professionalService.saveProfessional(any(ProfessionalDto.class)))
-                .willAnswer((invocation) -> invocation.getArgument(0));
+                .willAnswer(invocation -> invocation.getArgument(0));
 
         // when - action or behaviour that we are goint test
         var result = mockMvc.perform(post("/api/v1/professional/new")
@@ -72,7 +71,7 @@ public class ProfessionalControllerTest {
 
     @Test
     void givenProfessionalDto_whenSaveProfessional_thenThrowsAppointmentException()
-            throws JsonProcessingException, Exception {
+            throws Exception {
         // given - precodition or setup
         given(professionalService.saveProfessional(any(ProfessionalDto.class)))
                 .willThrow(AppointmentException.class);
@@ -87,7 +86,7 @@ public class ProfessionalControllerTest {
     }
 
     @Test
-    void givenProfessionalId_whenFindById_thenReturnProfessionalDto() throws JsonProcessingException, Exception {
+    void givenProfessionalId_whenFindById_thenReturnProfessionalDto() throws Exception {
         // given - precodition or setup
         given(professionalService.findById(1L))
                 .willReturn(professionalDto());
@@ -115,11 +114,11 @@ public class ProfessionalControllerTest {
     }
 
     @Test
-    void givenProfessionalDto_whenUpdate_thenReturnProfessionalDto() throws JsonProcessingException, Exception {
+    void givenProfessionalDto_whenUpdate_thenReturnProfessionalDto() throws Exception {
         // given - precodition or setup
 
         given(professionalService.updateProfessional(any(ProfessionalDto.class), any(Long.class)))
-                .willAnswer((invocation) -> invocation.getArgument(0));
+                .willAnswer(invocation -> invocation.getArgument(0));
         // when - action or behaviour that we are goint to test
         var result = mockMvc.perform(
                 put("/api/v1/professional/update/{id}", 1L)
@@ -136,7 +135,7 @@ public class ProfessionalControllerTest {
 
     @Test
     void givenProfessionalDto_whenUpdate_thenThrowsRetunrNotFoundException()
-            throws JsonProcessingException, Exception {
+            throws Exception {
         // given - precodition or setup
         given(professionalService.updateProfessional(any(ProfessionalDto.class), any(Long.class)))
                 .willThrow(ResourceNotFoundException.class);
@@ -152,7 +151,7 @@ public class ProfessionalControllerTest {
 
     @Test
     void givenProfessionalDto_whenUpdate_thenThrowsAppointmentException()
-            throws JsonProcessingException, Exception {
+            throws Exception {
         // given - precodition or setup
         given(professionalService.updateProfessional(any(ProfessionalDto.class), any(Long.class)))
                 .willThrow(AppointmentException.class);

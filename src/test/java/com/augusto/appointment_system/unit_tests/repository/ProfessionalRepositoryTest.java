@@ -14,12 +14,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
 
 @DataJpaTest
-public class ProfessionalRepositoryTest {
+class ProfessionalRepositoryTest {
     @Autowired
     ProfessionalRepository professionalRepository;
 
     @Test
-    public void givenProfessional_whenSave_thenReturnSavedProfesssional() throws IOException {
+    void givenProfessional_whenSave_thenReturnSavedProfesssional() throws IOException {
         // given - precodition or setup
         var savedProfessional = professionalRepository.save(professional());
 
@@ -32,7 +32,7 @@ public class ProfessionalRepositoryTest {
     }
 
     @Test
-    public void givenEmail_whenVerifyIfExist_thenReturnBool() throws Exception {
+    void givenEmail_whenVerifyIfExist_thenReturnBool() throws Exception {
         // given - precodition or setup
         var professionalEmailexists = professionalRepository.existsByEmail(professional().getEmail());
         // then - verify result
@@ -40,7 +40,7 @@ public class ProfessionalRepositoryTest {
     }
 
     @Test
-    public void givenEmail_whenFindByEmail_thenReturnProfessionalEntity() throws Exception {
+    void givenEmail_whenFindByEmail_thenReturnProfessionalEntity() throws Exception {
         // given - precodition or setup
         professionalRepository.save(professional());
         // when - action or the behavior that we are goint to test
@@ -51,7 +51,7 @@ public class ProfessionalRepositoryTest {
     }
 
     @Test
-    public void givenListProfessional_whenSelectAll_thenReturnListOfProfessionals() throws Exception {
+    void givenListProfessional_whenSelectAll_thenReturnListOfProfessionals() throws Exception {
         // given - precodition or setup
         professionalRepository.saveAll(professionalList());
         // when - action or the behavior that we are goint to test
@@ -62,7 +62,7 @@ public class ProfessionalRepositoryTest {
     }
 
     @Test
-    public void givenId_whenFindById_thenRetunrnProfessional() throws IOException {
+    void givenId_whenFindById_thenRetunrnProfessional() throws IOException {
         // given - precodition or setup
         var savedProfessional = professionalRepository.save(professional());
         // when - action or the behavior that we are goint to test
@@ -73,7 +73,7 @@ public class ProfessionalRepositoryTest {
     }
 
     @Test
-    public void givenProfessional_whenUpdateProfessional_thenReturnProfessional() throws IOException {
+    void givenProfessional_whenUpdateProfessional_thenReturnProfessional() throws IOException {
         // given - precodition or setup
         var professional = professionalRepository.save(professional());
 
@@ -91,7 +91,7 @@ public class ProfessionalRepositoryTest {
     }
 
     @Test
-    public void givenId_whenDeleteProfessional_thenVerifyResult() throws IOException {
+    void givenId_whenDeleteProfessional_thenVerifyResult() throws IOException {
         // given - precodition or setup
         var professional = professionalRepository.save(professional());
         // when - action or the behavior that we are goint to test

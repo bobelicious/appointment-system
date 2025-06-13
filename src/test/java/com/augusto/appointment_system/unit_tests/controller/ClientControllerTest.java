@@ -29,11 +29,10 @@ import com.augusto.appointment_system.exception.ResourceNotFoundException;
 import com.augusto.appointment_system.service.AppointmentService;
 import com.augusto.appointment_system.service.ClientService;
 import com.augusto.appointment_system.service.ProfessionalService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest
-public class ClientControllerTest {
+class ClientControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -49,10 +48,10 @@ public class ClientControllerTest {
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
-	void givenClientDto_whenSaveClient_thenReturnClientDto() throws JsonProcessingException, Exception {
+	void givenClientDto_whenSaveClient_thenReturnClientDto() throws Exception {
 		// given - precodition or setup
 		given(clientService.saveClient(any(ClientDto.class)))
-				.willAnswer((invocation) -> invocation.getArgument(0));
+				.willAnswer(invocation -> invocation.getArgument(0));
 
 		// when - action or behaviour that we are goint test
 		var result = mockMvc.perform(post("/api/v1/client/new")
@@ -68,7 +67,7 @@ public class ClientControllerTest {
 	}
 
 	@Test
-	void givenClientDto_whenSaveClient_thenThrowsAppointmentException() throws JsonProcessingException, Exception {
+	void givenClientDto_whenSaveClient_thenThrowsAppointmentException() throws Exception {
 		// given - precodition or setup
 		given(clientService.saveClient(any(ClientDto.class)))
 				.willThrow(AppointmentException.class);
@@ -83,7 +82,7 @@ public class ClientControllerTest {
 	}
 
 	@Test
-	void givenClientId_whenFindById_thenReturnClientDto() throws JsonProcessingException, Exception {
+	void givenClientId_whenFindById_thenReturnClientDto() throws Exception {
 		// given - precodition or setup
 		given(clientService.findClientById(1L))
 				.willReturn(clientDto());
@@ -110,10 +109,10 @@ public class ClientControllerTest {
 	}
 
 	@Test
-	void givenClientDto_whenUpdate_thenReturnClientDto() throws JsonProcessingException, Exception {
+	void givenClientDto_whenUpdate_thenReturnClientDto() throws Exception {
 		// given - precodition or setup
 		given(clientService.updateClient(any(ClientDto.class), any(Long.class)))
-				.willAnswer((invocation) -> invocation.getArgument(0));
+				.willAnswer(invocation -> invocation.getArgument(0));
 		// when - action or behaviour that we are goint to test
 		var result = mockMvc.perform(
 				put("/api/v1/client/update/{id}", 1L)
@@ -129,7 +128,7 @@ public class ClientControllerTest {
 	}
 
 	@Test
-	void givenClientDto_whenUpdate_thenThrowsRetunrNotFoundException() throws JsonProcessingException, Exception {
+	void givenClientDto_whenUpdate_thenThrowsRetunrNotFoundException() throws Exception {
 		// given - precodition or setup
 		given(clientService.updateClient(any(ClientDto.class), any(Long.class)))
 				.willThrow(ResourceNotFoundException.class);
@@ -144,7 +143,7 @@ public class ClientControllerTest {
 	}
 
 	@Test
-	void givenClientDto_whenUpdate_thenThrowsAppointmentException() throws JsonProcessingException, Exception {
+	void givenClientDto_whenUpdate_thenThrowsAppointmentException() throws Exception {
 		// given - precodition or setup
 		given(clientService.updateClient(any(ClientDto.class), any(Long.class)))
 				.willThrow(AppointmentException.class);
