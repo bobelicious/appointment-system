@@ -1,13 +1,16 @@
 package com.augusto.appointment_system.unit_tests.service;
 
 import static com.augusto.appointment_system.setup.SetupAppointment.appointment;
+import static com.augusto.appointment_system.setup.SetupAppointment.appointmentClientList;
 import static com.augusto.appointment_system.setup.SetupAppointment.appointmentDto;
+import static com.augusto.appointment_system.setup.SetupAppointment.appointmentProfessionalList;
 import static com.augusto.appointment_system.setup.SetupAvailability.availability;
 import static com.augusto.appointment_system.setup.SetupClient.client;
 import static com.augusto.appointment_system.setup.SetupProfessional.professional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -90,19 +93,13 @@ class AppointmentServiceTest {
     }
 
     @Test
-    void givenAppointmentDto_whenSaveAppointment_thenThrowUnvaliableDay() throws IOException {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowUnvaliableDay() {
         // given - precodition or setup
         var wrongAppointmentDto = new AppointmentDto(
                 "pepiye3978@claspira.com",
                 "a@gmail.com",
                 LocalDateTime.of(2025, 06, 14, 10, 00),
                 LocalDateTime.of(2025, 06, 14, 10, 45));
-
-        given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
-                .willReturn(Optional.of(professional()));
-        given(availabilityRepository
-                .findAvailabilityByProfessionalEmail(appointment().getProfessional().getEmail()))
-                .willReturn(Optional.of(availability()));
 
         // when - action or the behavior that we are going to test
         assertThrows(AppointmentException.class, () -> {
@@ -170,7 +167,7 @@ class AppointmentServiceTest {
 
     @Test
     void givenAppointmentDto_whenSaveAppointment_thenThrowsStartTimeIsAfter() {
-        // given - precodition or setup\
+        // given - precodition or setup
         var wrongAppointmentDto = new AppointmentDto(
                 "a@email.com",
                 "a@gmail.com",
@@ -184,6 +181,18 @@ class AppointmentServiceTest {
 
         // then - verify the results
         verify(appointmentRepository, never()).save(any(Appointment.class));
+    }
+
+    @Test
+    void givenAppointmentId_whenCancelAppointment_ThenReturnCancelMsg() throws IOException {
+        // given - precodition or setup
+        given(appointmentRepository.findById(1L)).willReturn(Optional.of(appointment()));
+
+        // when - action or the behavior that we are going to test
+        var result = appointmentService.cancelAppointment(1L);
+
+        // then - verify the results
+        assertThat(result).isEqualTo("Status canceled successful");
     }
 
     @Test
@@ -231,5 +240,33 @@ class AppointmentServiceTest {
 
         // then - verify the results
         assertThat(result).isEqualTo("Status confirmed successful");
+    }
+
+    @Test
+    void givenClientEmail_whenFindAllAppointments_thenReturnlistClientScheduledAppointments() throws IOException {
+        // given - precoditon or setup
+        given(appointmentRepository.findAllByClientEmail(anyString())).willReturn(appointmentClientList());
+        given(clientRepository.findClientByEmail(client().getEmail())).willReturn(Optional.of(client()));
+
+        // when - action or the behaviour that we are going to test
+        var reusult = appointmentService.listClientScheduledAppointments(client().getEmail());
+
+        // then - verify the results
+        assertThat(reusult.size()).isEqualTo(appointmentClientList().size());
+    }
+
+    @Test
+    void givenProfessionalEmail_whenFindAllAppointments_thenReturnlistProfessionalScheduledAppointments()
+            throws IOException {
+        // given - precoditon or setup
+        given(appointmentRepository.findAllByProfessionalEmail(anyString())).willReturn(appointmentProfessionalList());
+        given(professionalRepository.findProfessionalByEmail(professional().getEmail()))
+                .willReturn(Optional.of(professional()));
+
+        // when - action or the behaviour that we are going to test
+        var reusult = appointmentService.listProfessionalScheduledAppointments(professional().getEmail());
+
+        // then - verify the results
+        assertThat(reusult.size()).isEqualTo(appointmentProfessionalList().size());
     }
 }

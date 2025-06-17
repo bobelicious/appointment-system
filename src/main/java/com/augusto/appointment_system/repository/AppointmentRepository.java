@@ -10,4 +10,5 @@ import com.augusto.appointment_system.model.Appointment;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     boolean existsByStartTimeAndProfessionalEmail(LocalDateTime startTime, String professionalEmail);
     List<Appointment> findAllByClientEmail(String clientEmail);
+    List<Appointment> findAllByProfessionalEmail(String clientEmail);
 }

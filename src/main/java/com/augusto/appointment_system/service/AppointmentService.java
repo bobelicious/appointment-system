@@ -82,8 +82,19 @@ public class AppointmentService {
 
     public List<AppointmentDto> listProfessionalScheduledAppointments(String professionalEmail) {
         getValidatedProfessional(professionalEmail);
-        var scheduledAppointments = appointmentRepository.findAllByClientEmail(professionalEmail);
+        var scheduledAppointments = appointmentRepository.findAllByProfessionalEmail(professionalEmail);
         return scheduledAppointments.stream().map(AppointmentMapper::mapToappointmentDto).toList();
+    }
+
+    public String cancelAppointment(Long id) {
+        var appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment cancellation", "id", id));
+        appointment.setStatus(AppointmentStatus.CANCELLED);
+        appointmentRepository.save(appointment);
+        var message = String.format("Agendamento cancelado com sucesso, id: %s", appointment.getId());
+        sendEmail(appointment.getClient().getEmail(), "Cancelamento de agendamento", message);
+        sendEmail(appointment.getProfessional().getEmail(), "Cancelamento de agendamento", message);
+        return "Status canceled successful";
     }
 
     private Appointment createScheduledAppointment(AppointmentDto dto, Client client, Professional professional,
@@ -129,7 +140,7 @@ public class AppointmentService {
         var availability = availabilityRepository.findAvailabilityByProfessionalEmail(professionalEmail).orElseThrow(
                 () -> new ResourceNotFoundException("Availability", "professionalEmail", professionalEmail));
 
-        var contains = availability.getAvailableDays().stream().anyMatch((day) -> starTime.getDayOfWeek().equals(day));
+        var contains = availability.getAvailableDays().stream().anyMatch(day -> starTime.getDayOfWeek().equals(day));
         if (!contains) {
             throw new AppointmentException(HttpStatus.BAD_REQUEST, "Unavailable day");
         }

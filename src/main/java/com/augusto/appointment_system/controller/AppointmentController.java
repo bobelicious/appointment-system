@@ -44,4 +44,9 @@ public class AppointmentController {
         return new ResponseEntity<>(appointmentService.listProfessionalScheduledAppointments(email), HttpStatus.OK);
     }
 
+    @GetMapping("/cancel/{id}")
+    public ResponseEntity<String> cancelAppointment(@PathVariable Long id) {
+        return new ResponseEntity<>(appointmentService.cancelAppointment(id), HttpStatus.OK);
+    }
+
 }
