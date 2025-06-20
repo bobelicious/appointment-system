@@ -1,7 +1,7 @@
 package com.augusto.appointment_system.service;
 
 import static com.augusto.appointment_system.mapper.AppointmentMapper.mapToAppointment;
-import static com.augusto.appointment_system.mapper.AppointmentMapper.mapToappointmentDto;
+import static com.augusto.appointment_system.mapper.AppointmentMapper.mapToAppointmentDto;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -61,7 +61,7 @@ public class AppointmentService {
 
         sendEmail(appointmentDto.clientEmail(),
                 "Confirmacao de agendamento", generateConfirmLink(appointment.getId()));
-        return mapToappointmentDto(appointment);
+        return mapToAppointmentDto(appointment);
     }
 
     public String confirmAppointment(Long id) {
@@ -77,13 +77,13 @@ public class AppointmentService {
     public List<AppointmentDto> listClientScheduledAppointments(String clientEmail) {
         getValidatedClient(clientEmail);
         var scheduledAppointments = appointmentRepository.findAllByClientEmail(clientEmail);
-        return scheduledAppointments.stream().map(AppointmentMapper::mapToappointmentDto).toList();
+        return scheduledAppointments.stream().map(AppointmentMapper::mapToAppointmentDto).toList();
     }
 
     public List<AppointmentDto> listProfessionalScheduledAppointments(String professionalEmail) {
         getValidatedProfessional(professionalEmail);
         var scheduledAppointments = appointmentRepository.findAllByProfessionalEmail(professionalEmail);
-        return scheduledAppointments.stream().map(AppointmentMapper::mapToappointmentDto).toList();
+        return scheduledAppointments.stream().map(AppointmentMapper::mapToAppointmentDto).toList();
     }
 
     public String cancelAppointment(Long id) {

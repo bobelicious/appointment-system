@@ -16,7 +16,7 @@ public class SetupAppointment {
     private static String APPOINTMENT_PROFESSIONAL_LIST_JSON_PATH = "src/test/resources/payload/appointment/entity/appointment-professional-list.json";
     private static String APPOINTMENT_DTO_JSON_PATH = "src/test/resources/payload/appointment/dto/appointment-dto.json";
     private static String APPOINTMENT_CLIENT_DTO_LIST_JSON_PATH = "src/test/resources/payload/appointment/dto/appointment-client-list-dto.json";
-    private static String APPOINTMENT_PROFESSIONAL_DTO_LIST_JSON_PATH = "src/test/resources/payload/appointment/dto/appointment-professional-list-dto.json";
+    private static String APPOINTMENT_PROFESSIONAL_DTO_LIST_JSON_PATH = "src/test/resources/payload/appointment/dto/appointment-professional-list-dto .json";
 
     static ObjectMapper objectMapper = new ObjectMapper();
 

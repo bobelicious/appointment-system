@@ -16,7 +16,7 @@ public class AppointmentMapper {
                 .build();
     }
 
-    public static AppointmentDto mapToappointmentDto(Appointment appointment) {
+    public static AppointmentDto mapToAppointmentDto(Appointment appointment) {
         return new AppointmentDto(appointment.getClient().getEmail(), appointment.getProfessional().getEmail(),
                 appointment.getStartTime(), appointment.getEndTime());
     }

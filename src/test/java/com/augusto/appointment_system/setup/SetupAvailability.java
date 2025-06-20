@@ -9,12 +9,15 @@ import java.util.List;
 
 import com.augusto.appointment_system.dto.AvailabilityDto;
 import com.augusto.appointment_system.model.Availability;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class SetupAvailability {
     private static String AVAILABILITY_JSON_PATH = "src/test/resources/payload/availibility/entity/availibility.json";
+    private static String AVAILABILITY_LIST_JSON_PATH = "src/test/resources/payload/availibility/entity/availability-list.json";
     private static String AVAILABILITY_DTO_JSON_PATH = "src/test/resources/payload/availibility/dto/availibility-dto.json";
+    private static String AVAILABILITY_DTO_LIST_JSON_PATH = "src/test/resources/payload/availibility/dto/availability-dto-list.json";
 
     static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -35,6 +38,14 @@ public class SetupAvailability {
                 .build();
     }
 
+    public static List<Availability> listAvailability() throws IOException {
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper.readValue(
+                new File(AVAILABILITY_LIST_JSON_PATH),
+                new TypeReference<List<Availability>>() {
+                });
+    }
+
     public static AvailabilityDto availabilityDto() throws IOException {
         objectMapper.registerModule(new JavaTimeModule());
         return objectMapper.readValue(
@@ -50,4 +61,13 @@ public class SetupAvailability {
                 LocalTime.of(23, 59),
                 45);
     }
+
+    public static List<AvailabilityDto> listAvailabilityDto() throws IOException {
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper.readValue(
+                new File(AVAILABILITY_DTO_LIST_JSON_PATH),
+                new TypeReference<List<AvailabilityDto>>() {
+                });
+    }
+
 }

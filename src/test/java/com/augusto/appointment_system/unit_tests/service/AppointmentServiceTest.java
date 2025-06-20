@@ -243,7 +243,7 @@ class AppointmentServiceTest {
     }
 
     @Test
-    void givenClientEmail_whenFindAllAppointments_thenReturnlistClientScheduledAppointments() throws IOException {
+    void givenClientEmail_whenFindAllAppointments_thenReturnListClientScheduledAppointments() throws IOException {
         // given - precoditon or setup
         given(appointmentRepository.findAllByClientEmail(anyString())).willReturn(appointmentClientList());
         given(clientRepository.findClientByEmail(client().getEmail())).willReturn(Optional.of(client()));
@@ -256,7 +256,7 @@ class AppointmentServiceTest {
     }
 
     @Test
-    void givenProfessionalEmail_whenFindAllAppointments_thenReturnlistProfessionalScheduledAppointments()
+    void givenProfessionalEmail_whenFindAllAppointments_thenReturnListProfessionalScheduledAppointments()
             throws IOException {
         // given - precoditon or setup
         given(appointmentRepository.findAllByProfessionalEmail(anyString())).willReturn(appointmentProfessionalList());

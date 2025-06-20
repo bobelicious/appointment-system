@@ -1,6 +1,10 @@
 package com.augusto.appointment_system.unit_tests.controller;
 
+import static com.augusto.appointment_system.setup.SetupAppointment.appointmentClientDtoList;
 import static com.augusto.appointment_system.setup.SetupAppointment.appointmentDto;
+import static com.augusto.appointment_system.setup.SetupAppointment.appointmentProfessionalDtoList;
+import static com.augusto.appointment_system.setup.SetupClient.clientDto;
+import static com.augusto.appointment_system.setup.SetupProfessional.professionalDto;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -70,11 +74,53 @@ class AppointmentControllerTest {
         // given - precodition or setup
         given(appointmentService.confirmAppointment(1L)).willReturn("Status confirmed successful");
 
-        // when - action or behaviour that we are goint test
+        // when - action or behaviour that we are going test
         var result = mockMvc.perform(get("/api/v1/appointment/confirm/{id}", 1L));
 
         // then - verify
         result.andExpect(status().isOk());
     }
 
+    @Test
+    void givenClientEmail_whenFindAllClientAppointments_thenReturnListClientScheduledAppointments() throws Exception {
+        // given - precodition or setup
+        given(appointmentService.listClientScheduledAppointments(clientDto().getEmail()))
+                .willReturn(appointmentClientDtoList());
+
+        // when - action or behaviour that we are going to test
+        var result = mockMvc
+                .perform(get("/api/v1/appointment/scheduled-appointments/client/{email}", clientDto().getEmail()));
+
+        // then - verify
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(appointmentClientDtoList().size())));
+
+    }
+
+    @Test
+    void givenProfessionalEmail_whenFindAllProfessionalAppointments_thenRetunrListProfessionalScheduledAppointments()
+            throws Exception {
+        // given - precodition or setup
+        given(appointmentService.listProfessionalScheduledAppointments(professionalDto().email()))
+                .willReturn(appointmentProfessionalDtoList());
+        // when - actiuon or behaviour that we are going to test
+        var result = mockMvc.perform(
+                get("/api/v1/appointment/scheduled-appointments/professional/{email}", professionalDto().email()));
+
+        // then - verify
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(appointmentProfessionalDtoList().size())));
+    }
+
+    @Test
+    void givenAppointmentId_whenChangeAppointmentToCancel_returnCancelMsg() throws Exception {
+        // given - precodition or setup
+        given(appointmentService.cancelAppointment(1L)).willReturn("Status canceled successful");
+
+        // when - action or behaviour we are going to test
+        var result = mockMvc.perform(get("/api/v1/appointment/cancel/{id}", 1L));
+
+        // then - verify
+        result.andExpect(status().isOk()).andExpect(jsonPath("$", is("Status canceled successful")));
+    }
 }
