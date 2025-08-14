@@ -10,5 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientDto {
-    String name; String email; String phone;
+    String name;
+    String email;
+    String phone;
 }

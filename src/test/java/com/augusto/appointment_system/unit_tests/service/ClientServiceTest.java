@@ -122,6 +122,16 @@ class ClientServiceTest {
     }
 
     @Test
+    void givenId_whenFindById_thenThrowClientNotFound() {
+        // given - precodition or setup
+        given(clientRepository.findById(1L)).willReturn(Optional.ofNullable(null));
+        // when - action or the behavior that we are goint to test
+        assertThrows(ResourceNotFoundException.class, () -> {
+            clientService.findClientById(1L);
+        });
+    }
+
+    @Test
     void givenListOfClients_whenFindAll_thenReturnListOfClietsDto() {
         // given - precodition or setup
         given(clientRepository.findAll()).willReturn(clientList);

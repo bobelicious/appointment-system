@@ -31,6 +31,7 @@ import com.augusto.appointment_system.dto.AppointmentDto;
 import com.augusto.appointment_system.exception.AppointmentException;
 import com.augusto.appointment_system.exception.ResourceNotFoundException;
 import com.augusto.appointment_system.model.Appointment;
+import com.augusto.appointment_system.model.AppointmentStatus;
 import com.augusto.appointment_system.repository.AppointmentRepository;
 import com.augusto.appointment_system.repository.AvailabilityRepository;
 import com.augusto.appointment_system.repository.ClientRepository;
@@ -75,6 +76,18 @@ class AppointmentServiceTest {
     }
 
     @Test
+    void givenAppointmentDto_whenSaveAppointment_thenThrowProfessionalyNotFound() throws IOException {
+        // given - precodition or setup
+        given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
+                .willReturn(Optional.ofNullable(null));
+
+        // when - action or the behavior that we are going to test
+        assertThrows(ResourceNotFoundException.class, () -> {
+            appointmentService.createAppointment(appointmentDto());
+        });
+    }
+
+    @Test
     void givenAppointmentDto_whenSaveAppointment_thenThrowAvailabilityNotFound() throws IOException {
         // given - precodition or setup
         given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
@@ -93,13 +106,19 @@ class AppointmentServiceTest {
     }
 
     @Test
-    void givenAppointmentDto_whenSaveAppointment_thenThrowUnvaliableDay() {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowUnvaliableDay() throws IOException {
         // given - precodition or setup
         var wrongAppointmentDto = new AppointmentDto(
                 "pepiye3978@claspira.com",
                 "a@gmail.com",
-                LocalDateTime.of(2025, 06, 14, 10, 00),
-                LocalDateTime.of(2025, 06, 14, 10, 45));
+                LocalDateTime.of(2026, 06, 14, 10, 00),
+                LocalDateTime.of(2026, 06, 14, 10, 45),
+                AppointmentStatus.CONFIRMED);
+        given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
+                .willReturn(Optional.of(professional()));
+        given(availabilityRepository
+                .findAvailabilityByProfessionalEmail(appointment().getProfessional().getEmail()))
+                .willReturn(Optional.of(availability()));
 
         // when - action or the behavior that we are going to test
         assertThrows(AppointmentException.class, () -> {
@@ -136,7 +155,8 @@ class AppointmentServiceTest {
                 "a@email.com",
                 "a@gmail.com",
                 LocalDateTime.of(2025, 06, 9, 10, 00),
-                LocalDateTime.of(2025, 06, 9, 10, 45));
+                LocalDateTime.of(2025, 06, 9, 10, 45),
+                AppointmentStatus.CONFIRMED);
 
         // when - action or the behavior that we are going to test
         assertThrows(AppointmentException.class, () -> {
@@ -148,13 +168,19 @@ class AppointmentServiceTest {
     }
 
     @Test
-    void givenAppointmentDto_whenSaveAppointment_thenThrowsStartTimeIsBefore() {
+    void givenAppointmentDto_whenSaveAppointment_thenThrowsStartTimeIsBefore() throws IOException {
         // given - precodition or setup\
         var wrongAppointmentDto = new AppointmentDto(
                 "a@email.com",
                 "a@gmail.com",
-                LocalDateTime.of(2025, 06, 12, 05, 00),
-                LocalDateTime.of(2025, 06, 12, 10, 45));
+                LocalDateTime.of(2026, 06, 12, 18, 00),
+                LocalDateTime.of(2026, 06, 12, 18, 45),
+                AppointmentStatus.CONFIRMED);
+        given(professionalRepository.findProfessionalByEmail(appointmentDto().professionalEmail()))
+                .willReturn(Optional.of(professional()));
+        given(availabilityRepository
+                .findAvailabilityByProfessionalEmail(appointment().getProfessional().getEmail()))
+                .willReturn(Optional.of(availability()));
 
         // when - action or the behavior that we are going to test
         assertThrows(AppointmentException.class, () -> {
@@ -172,7 +198,8 @@ class AppointmentServiceTest {
                 "a@email.com",
                 "a@gmail.com",
                 LocalDateTime.of(2025, 06, 12, 19, 00),
-                LocalDateTime.of(2025, 06, 12, 10, 45));
+                LocalDateTime.of(2025, 06, 12, 10, 45),
+                AppointmentStatus.CONFIRMED);
 
         // when - action or the behavior that we are going to test
         assertThrows(AppointmentException.class, () -> {
@@ -240,6 +267,26 @@ class AppointmentServiceTest {
 
         // then - verify the results
         assertThat(result).isEqualTo("Status confirmed successful");
+    }
+
+    @Test
+    void givenAppointmentId_whenChangeAppointmentToConfirmed_thenThrowAppointmentNotFound() {
+        // given - precodition or setup
+        given(appointmentRepository.findById(1L)).willReturn(Optional.ofNullable(null));
+        // when - action or the behavior that we are going to test
+        assertThrows(ResourceNotFoundException.class, () -> {
+            appointmentService.confirmAppointment(1L);
+        });
+    }
+
+    @Test
+    void givenAppointmentId_whenChangeAppointmentToCancelled_thenThrowAppointmentNotFound() {
+        // given - precodition or setup
+        given(appointmentRepository.findById(1L)).willReturn(Optional.ofNullable(null));
+        // when - action or the behavior that we are going to test
+        assertThrows(ResourceNotFoundException.class, () -> {
+            appointmentService.cancelAppointment(1L);
+        });
     }
 
     @Test

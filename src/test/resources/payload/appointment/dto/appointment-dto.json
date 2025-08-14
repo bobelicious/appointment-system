@@ -2,5 +2,6 @@
     "clientEmail": "a@gmail.com",
     "professionalEmail": "a@gmail.com",
     "startTime": "2026-06-22T10:22:00",
-    "endTime": "2026-06-22T14:30:00"
+    "endTime": "2026-06-22T14:30:00",
+        "status": "SCHEDULED"
 }

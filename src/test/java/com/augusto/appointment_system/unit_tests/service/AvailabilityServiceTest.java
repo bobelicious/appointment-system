@@ -5,6 +5,7 @@ import static com.augusto.appointment_system.setup.SetupAvailability.availabilit
 import static com.augusto.appointment_system.setup.SetupAvailability.updatedAvailability;
 import static com.augusto.appointment_system.setup.SetupProfessional.professional;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -17,6 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.augusto.appointment_system.exception.AppointmentException;
+import com.augusto.appointment_system.exception.ResourceNotFoundException;
 import com.augusto.appointment_system.model.Availability;
 import com.augusto.appointment_system.repository.AvailabilityRepository;
 import com.augusto.appointment_system.repository.ProfessionalRepository;
@@ -45,6 +48,18 @@ class AvailabilityServiceTest {
     }
 
     @Test
+    void givenAvailabilityDto_whenSave_thenThrowsProfessionalHaveAvailabilityError() throws IOException {
+        // given - precodition or setup
+        given(availabilityRepository.findAvailabilityByProfessionalEmail(professional().getEmail()))
+                .willReturn(Optional.of(availability()));
+        // when - action or behavior we are going to test
+        assertThrows(AppointmentException.class, () -> {
+            availabilityService.saveAvailability(availabilityDto());
+        });
+
+    }
+
+    @Test
     void givenAvailabilityDto_whenUpdate_thenReturnUpdatedAvailabilityDto() throws IOException {
         // given - precodition or setup
         given(availabilityRepository.findAvailabilityByProfessionalEmail(professional().getEmail()))
@@ -56,5 +71,17 @@ class AvailabilityServiceTest {
         assertThat(result.professionalEmail()).isEqualTo(professional().getEmail());
         assertThat(result.availableDays()).isEqualTo(updatedAvailability().getAvailableDays());
         assertThat(result.endTime()).isEqualTo(updatedAvailability().getEndTime());
+    }
+
+    @Test
+    void givenAvailabilityDto_whenUpdate_thenThrowsProfessionalNotFoundError() throws IOException {
+        // given - precodition or setup
+        given(availabilityRepository.findAvailabilityByProfessionalEmail(professional().getEmail()))
+                .willReturn(Optional.ofNullable(null));
+        // when - action or behavior we are going to test
+        assertThrows(ResourceNotFoundException.class, () -> {
+            availabilityService.updateAvailabilityDto(professional().getEmail(), availabilityDto());
+        });
+
     }
 }

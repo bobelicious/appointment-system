@@ -18,6 +18,6 @@ public class AppointmentMapper {
 
     public static AppointmentDto mapToAppointmentDto(Appointment appointment) {
         return new AppointmentDto(appointment.getClient().getEmail(), appointment.getProfessional().getEmail(),
-                appointment.getStartTime(), appointment.getEndTime());
+                appointment.getStartTime(), appointment.getEndTime(), appointment.getStatus());
     }
 }

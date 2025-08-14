@@ -3,18 +3,21 @@
         "clientEmail": "a@gmail.com",
         "professionalEmail": "a@gmail.com",
         "startTime": "2026-06-10T10:22:00",
-        "endTime": "2026-06-10T14:30:00"
+        "endTime": "2026-06-10T14:30:00",
+        "status": "SCHEDULED"
     },
     {
         "clientEmail": "a@gmail.com",
         "professionalEmail": "b@gmail.com",
         "startTime": "2026-06-10T10:22:00",
-        "endTime": "2026-06-10T14:30:00"
+        "endTime": "2026-06-10T14:30:00",
+        "status": "SCHEDULED"
     },
     {
         "clientEmail": "a@gmail.com",
         "professionalEmail": "c@gmail.com",
         "startTime": "2026-06-10T10:22:00",
-        "endTime": "2026-06-10T14:30:00"
+        "endTime": "2026-06-10T14:30:00",
+        "status": "SCHEDULED"
     }
 ]
